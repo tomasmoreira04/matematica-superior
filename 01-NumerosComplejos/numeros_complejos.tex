@@ -15,8 +15,11 @@
 \usepackage{parskip}
 \usepackage{xcolor}
 \usepackage{cancel}
+\usepackage{pgfplots}
 
 \parindent 0ex
+
+\pgfplotsset{width=10cm,compat=1.9}
 
 \def\imj{\mathrm{j}}
 
@@ -72,6 +75,125 @@
 	en futuras unidades, como Serie de Fourier y Función de transferencia.
 	\section{Forma binómica}
 	\subsection{Ejercicio 1d}
+		Resuelva la siguiente operación en forma binómica:
+		
+		\begin{center}
+			$\displaystyle{\mathrm{Im}\left[\frac{\left(4+7\imj\right)\cdot\left(6-2\imj\right)}{2\imj}\right]+4\imj=}$
+		\end{center}
+		
+		Para resolver este ejercicio necesitamos resolver primero todo lo que se encuentre dentro del operador '$\mathrm{Im}$'.
+		Entonces, realizamos primero la multiplicación en el numerador:
+		$$\left(4+7\imj\right)\cdot\left(6-2\imj\right)=$$
+		$$4\cdot6+4\cdot\left(-2\imj\right)+7\imj\cdot6+7\imj\cdot\left(-2\imj\right)=$$
+		$$24-8\imj+42\imj-14\imj^{2}$$
+		\begin{center}
+			Recordemos que $\imj^{2}=-1$, entonces aplicando esta igualdad, podemos reemplazar donde corresponde:
+		\end{center}
+		$$24-8\imj+42\imj-14\cdot\left(-1\right)=$$
+		$$24-8\imj+42\imj+14=$$
+		$$\boxed{38-34\imj}$$
+		\begin{center}
+			Esta es la expresión resultante, por lo que la reemplazamos en la original:
+		\end{center}
+		$$\displaystyle{\mathrm{Im}\left[\frac{38-34\imj}{2\imj}\right]+4\imj=}$$
+		\begin{center}
+			El paso siguiente es realizar la división de los números complejos, para eso multiplicamos y dividimos por $\imj$:
+		\end{center}
+		$$\frac{38-34\imj}{\imj}=$$
+		$$\frac{\left(38-34\imj\right)\cdot\imj}{2\imj\cdot\imj}=$$
+		$$\frac{38\imj+34}{-2}=\boxed{-17-19\imj}$$
+		\begin{center}
+			Volvemos a reemplazar lo obtenido en la expresión original:
+		\end{center}
+		$$\mathrm{Im}\left[-17-19\imj\right]+4j=\cdots$$
+		Ahora, si tenemos a un número complejo de la forma $z=a+b\imj$, definimos $\mathrm{Im}(z)=b$, \textbf{\underline{SIN}} la $\imj$.
+		
+		Entonces, aplicando esto a la expresión obtenemos el resultado final:
+		\begin{center}
+			\fcolorbox{black}{yellow}{$-19+4\imj$}
+		\end{center}
+	\subsection{Ejercicio 5a}
+		Determine el conjunto de los complejos que cumplan las siguientes condiciones:
+		
+		\begin{center}
+			{\large \textbf{Que su cuadrado sea igual a su conjugado}}
+		\end{center}
+				
+		Para resolver este ejercicio vamos a traducir lo que dice el enunciado en notación literal.
+		
+		Consideremos un número complejo $z=x+y\imj$
+		
+		Lo que nos piden, entonces es:
+		$$z^{2}=\overline{z}$$
+		Recordemos la definición del conjugado de un número complejo:
+		\begin{center}
+			Sea $z=x+y\imj$, entonces $\overline{z}=x-y\imj$
+		\end{center}
+		
+		Es decir, dado un número complejo, su conjugado es el resultado de cambiarle el signo a su parte imaginaria.
+		
+		Con esto dicho, empecemos a operar:
+		$$\left(x+y\imj\right)^{2}=x-y\imj$$
+		$$x^{2}+2xy\imj+y^{2}\imj^{2}=x-y\imj$$
+		\begin{center}
+			Recordemos que $\imj^{2}=-1$ y acomodemos un poco la ecuación:
+		\end{center}
+		$$x^{2}-y^{2}+2xy\imj=x-y\imj$$
+		Ahora bien, para que esta igualdad se cumpla, hay que recordar la igualdad de números complejos:
+		\begin{center}
+			Sean $r=a+b\imj \wedge s=c+d\imj$ entonces, estos dos números complejos son iguales sí y solo sí $a=c \wedge b=d$ 
+		\end{center}
+		\begin{center}
+			Aplicamos lo previamente mencionado y vamos a obtener dos ecuaciones:
+		\end{center}
+		$$\left\{\begin{matrix}
+		x^2-y^2=x \\ 2xy=-y
+		\end{matrix}\right.$$
+		\begin{center}
+			\begin{tabular}{c | c}
+				Si consideramos que $y\neq0$ & Si consideramos que $y=0$\\\hline
+				$\left\{\begin{matrix}
+				x^2-y^2=x \\ 2x\cancel{y}=-\cancel{y}
+				\end{matrix}\right.$ &
+				$\left\{\begin{matrix}
+				x^2-y^2=x \\ y=0
+				\end{matrix}\right.$ \\[0.5cm]
+				$\left\{\begin{matrix}
+				x^2-y^2=x \\ 2x=-1
+				\end{matrix}\right.$ &
+				$\left\{\begin{matrix}
+				x^2-0=x \\ y=0
+				\end{matrix}\right.$ \\[0.5cm]
+				$\displaystyle{\left\{\begin{matrix}
+					x^2-y^2=x \\ x=-\frac{1}{2}
+					\end{matrix}\right.}$ &
+				$\left\{\begin{matrix}
+				x^2-x=0 \\ y=0
+				\end{matrix}\right.$ \\[0.5cm]
+				$\left\{\begin{matrix}
+				\left(-\frac{1}{2}\right)^2-y^2=-\frac{1}{2} \\ x=-\frac{1}{2}
+				\end{matrix}\right.$ &
+				$\left\{\begin{matrix}
+				x(x-1)=0 \\ y=0
+				\end{matrix}\right.$ \\ [0.5cm]
+				$\displaystyle{\left\lbrace\begin{matrix}
+					y=\pm\frac{\sqrt{3}}{2} \\ x=-\frac{1}{2}
+					\end{matrix}\right.}$ &
+				$\left\{\begin{matrix}
+				x=0 \vee x=1 \\ y=0
+				\end{matrix}\right.$
+			\end{tabular}
+		\end{center}
+		\pagebreak
+		Finalmente, las soluciones son:
+		\begin{center}
+			\fcolorbox{black}{yellow}{$\displaystyle{
+					z=\left(-\frac{1}{2},\frac{\sqrt{3}}{2}\right) \vee
+					z=\left(-\frac{1}{2},-\frac{\sqrt{3}}{2}\right) \vee
+					z=\left(1,0\right) \vee
+					z=\left(0,0\right)
+				}$}
+		\end{center}
 	\section{Forma polar}
 	\section{Raíces n-ésimas}
 	\section{Logaritmo natural y exponenciales complejas}
