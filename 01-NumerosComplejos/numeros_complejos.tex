@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in, headheight=14.5pt]{geometry}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage[none]{hyphenat}
+\usepackage{fancyhdr}
+\usepackage[spanish]{babel}
+\usepackage[spanish, calc]{datetime2}
+\usepackage{fmtcount}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[nottoc, notlot, notlof]{tocbibind}
+\usepackage{tocloft}
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{cancel}
+
+\parindent 0ex
+
+\def\imj{\mathrm{j}}
+
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+\renewcommand{\baselinestretch}{1.1}
+
+\graphicspath{{C:/Users/tomas/OneDrive/Escritorio/LATEX/matematica-superior/commons/img/}}
+
+
+\begin{document}
+		
+	\begin{titlepage}
+		\begin{center}
+			\vspace*{0.5cm}
+			\Large{\textbf{Universidad Tecnológica Nacional}}\\
+			\Large{\textbf{Facultad Regional Buenos Aires}}\\
+			\begin{center}
+				\includegraphics[scale=0.4]{logoutn.png}
+			\end{center}
+			\vfill
+			\line(1,0){400}\\
+			\vspace*{0.3cm}
+			\huge{\textbf{Matemática Superior}}\\
+			\Large{\textbf{Unidad 1: Números complejos}}\\
+			\large{Ejercicios resueltos}
+			\line(1,0){400}\\
+			\vfill
+			Tomás Moreira \\
+			
+			\DTMnewdatestyle{mydate}{%
+				\renewcommand{\DTMdisplaydate}[4]{%
+					\DTMMonthname{##2} \number##1
+				}
+				\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}
+			}
+			
+			\DTMsetdatestyle{mydate}
+			\today
+				
+				
+		\end{center}
+	\end{titlepage}
+
+	\tableofcontents
+	\thispagestyle{empty}
+	\clearpage
+
+	\setcounter{page}{1}
+	\section{Introducción}
+	¡Hola! Bienvenido a esta guía que busca mostrar la resolución de algunos ejercicios de la primera unidad de la materia: Números Complejos.
+	El documento está hecho al 100\% con \AmS-\LaTeX. Esperemos que te sea de utilidad, y no dudes en consultar cualquier duda.\\
+	Como repaso de álgebra, vemos las operaciones más importantes y tratamos con estos números en sus distintas formas. Estos nos van a servir
+	en futuras unidades, como Serie de Fourier y Función de transferencia.
+	\section{Forma binómica}
+	\subsection{Ejercicio 1d}
+	\section{Forma polar}
+	\section{Raíces n-ésimas}
+	\section{Logaritmo natural y exponenciales complejas}
+	\section{Ejercicios combinados}
+	\section{Superposición de señales senoidales de igual frecuencia}
+\end{document}
