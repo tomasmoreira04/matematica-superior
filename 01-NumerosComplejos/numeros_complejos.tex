@@ -16,6 +16,9 @@
 \usepackage{xcolor}
 \usepackage{cancel}
 \usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
 
 \parindent 0ex
 
@@ -25,6 +28,8 @@
 
 \renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
 \renewcommand{\baselinestretch}{1.1}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
 
 \graphicspath{{C:/Users/tomas/OneDrive/Escritorio/LATEX/matematica-superior/commons/img/}}
 
@@ -147,53 +152,99 @@
 			Aplicamos lo previamente mencionado y vamos a obtener dos ecuaciones:
 		\end{center}
 		$$\left\{\begin{matrix}
-		x^2-y^2=x \\ 2xy=-y
+		x^2-y^2=x \hspace{0.5cm} \circled{1} \\ 2xy=-y \hspace{0.8cm} \circled{2}
 		\end{matrix}\right.$$
 		\begin{center}
-			\begin{tabular}{c | c}
-				Si consideramos que $y\neq0$ & Si consideramos que $y=0$\\\hline
-				$\left\{\begin{matrix}
-				x^2-y^2=x \\ 2x\cancel{y}=-\cancel{y}
-				\end{matrix}\right.$ &
-				$\left\{\begin{matrix}
-				x^2-y^2=x \\ y=0
-				\end{matrix}\right.$ \\[0.5cm]
-				$\left\{\begin{matrix}
-				x^2-y^2=x \\ 2x=-1
-				\end{matrix}\right.$ &
-				$\left\{\begin{matrix}
-				x^2-0=x \\ y=0
-				\end{matrix}\right.$ \\[0.5cm]
-				$\displaystyle{\left\{\begin{matrix}
-					x^2-y^2=x \\ x=-\frac{1}{2}
-					\end{matrix}\right.}$ &
-				$\left\{\begin{matrix}
-				x^2-x=0 \\ y=0
-				\end{matrix}\right.$ \\[0.5cm]
-				$\left\{\begin{matrix}
-				\left(-\frac{1}{2}\right)^2-y^2=-\frac{1}{2} \\ x=-\frac{1}{2}
-				\end{matrix}\right.$ &
-				$\left\{\begin{matrix}
-				x(x-1)=0 \\ y=0
-				\end{matrix}\right.$ \\ [0.5cm]
-				$\displaystyle{\left\lbrace\begin{matrix}
-					y=\pm\frac{\sqrt{3}}{2} \\ x=-\frac{1}{2}
-					\end{matrix}\right.}$ &
-				$\left\{\begin{matrix}
-				x=0 \vee x=1 \\ y=0
-				\end{matrix}\right.$
-			\end{tabular}
-		\end{center}
-		\pagebreak
-		Finalmente, las soluciones son:
-		\begin{center}
-			\fcolorbox{black}{yellow}{$\displaystyle{
-					z=\left(-\frac{1}{2},\frac{\sqrt{3}}{2}\right) \vee
-					z=\left(-\frac{1}{2},-\frac{\sqrt{3}}{2}\right) \vee
-					z=\left(1,0\right) \vee
-					z=\left(0,0\right)
-				}$}
-		\end{center}
+			Resolvamos primero para \circled{2}
+			$$2xy=-y$$
+			$$2x\cancel{y}=-\cancel{y}$$
+			¡¡Un momento!! ¿Está bien simplificar esas $y$? \\
+			Claro que sí, pero es importante tener la consideración de que $y$ NO puede ser cero.\\
+			Por lo que nuestro ejercicio se va a dividir en dos. Una parte considerando que $y$ sea cero y la otra, en la que vamos a considerar que \textbf{no} sea cero. \\
+			\vspace{0.35cm}
+			\underline{\textbf{Si $y\neq0$:}}
+			$$2x\cancel{y}=-\cancel{y}$$
+			$$2x=-1$$
+			$$\boxed{x=-\frac{1}{2}}$$
+			Reemplacemos este resultado en \circled{1}
+			$${\left(-\frac{1}{2}\right)}^{2}-y^{2}=-\frac{1}{2}$$
+			$$\frac{1}{4}-y^{2}=-\frac{1}{2}$$
+			$$y^{2}=\frac{3}{4}$$
+			$$\boxed{y=\pm\frac{\sqrt{3}}{2}}$$
+			Por lo que finalmente para este camino, tenemos dos soluciones:
+			$$\boxed{\left( x=-\frac{1}{2} \wedge y=\frac{\sqrt{3}}{2}\right)  \vee \left( x=-\frac{1}{2}\wedge y=-\frac{\sqrt{3}}{2}\right)}$$
+			
+			Ahora consideremos el otro camino. \\
+			\textbf{\underline{Si $y=0$:}} \\
+			En \circled{1}:
+			$$x^2-0^2=x$$
+			$$x^2-x=0$$
+			$$x(x-1)=0$$
+			Por lo tanto:
+			$$\boxed{x=0 \vee x=1}$$
+			
+			Recapitulando, en total obtenemos cuatro soluciones, que escritas en notación de par ordenado son:
+			\begin{center}
+				\fcolorbox{black}{yellow}{$\displaystyle{
+						z=\left(-\frac{1}{2},\frac{\sqrt{3}}{2}\right) \vee
+						z=\left(-\frac{1}{2},-\frac{\sqrt{3}}{2}\right) \vee
+						z=\left(1,0\right) \vee
+						z=\left(0,0\right)
+					}$}
+			\end{center}
+		\end{center}		
+	\subsection{Ejercicios 7cdh}
+	Describa y construya la gráfica del lugar geométrico representado por cada una de las siguientes ecuaciones: (considere $z=x+y\imj$)
+	\subsubsection{7c}
+	$\mathrm{c)}\;z\left(\overline{z}+2\right)=3$
+	
+	Empecemos aplicando propiedad distributiva:
+	$$z\overline{z}+2z=3$$
+	\begin{center}
+		Teniendo en cuenta que $z\overline{z}=\left\vert z \right\vert ^{2}=x^2+y^2$
+	\end{center}
+	$$x^2+y^2+2(x+y\imj)=3$$
+	$$x^2+2x+y^2+2y\imj=3$$
+	\begin{center}
+		Nuevamente debemos usar la igualdad entre complejos para resolver, entonces obtenemos dos ecuaciones:
+		$$\left\lbrace\begin{matrix}
+		x^2+2x+y^2=3 \\
+		2y=0
+		\end{matrix}\right.$$
+		$$\left\lbrace\begin{matrix}
+		x^2+2x+y^2=3 \\
+		y=0
+		\end{matrix}\right.$$
+		Como $y=0$, reemplazamos en la otra ecuación:
+		$$\left\lbrace\begin{matrix}
+		x^2+2x-3=0 \\
+		y=0
+		\end{matrix}\right.$$
+		Resolviendo la ecuación cuadrática obtenemos:
+		$$x=1\vee x=-3$$
+	\end{center}
+	Por lo que nuestras soluciones son:
+	\begin{center}
+		\fcolorbox{black}{yellow}{$z=(1,0) \vee z=(-3,0)$}
+	\end{center}
+	La gráfica sería, entonces: \\
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+			unit vector ratio*=1 1 1,
+			axis lines=middle,
+			xlabel={$x$}, ylabel={$y$},
+			ytick={-1,0,1},
+			xmin=-5, xmax=2,
+			ymin=-2, ymax=2,
+			]
+			\addplot [only marks] table {
+				-3  0
+				1   0
+			};
+			\end{axis}
+		\end{tikzpicture} 
+	\end{center}
 	\section{Forma polar}
 	\section{Raíces n-ésimas}
 	\section{Logaritmo natural y exponenciales complejas}
