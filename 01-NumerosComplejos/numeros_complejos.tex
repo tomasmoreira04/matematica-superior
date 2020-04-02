@@ -351,8 +351,8 @@
 	\end{center}
 	En conclusión nos conviene tomar dos caminos:
 	\begin{itemize}
-		\item Agarramos ambos valores $w_{1}$ y $w_{2}$ y los pasamos únicamente por el $+$ del $\pm$ de la resolvente.
-		\item Agarramos uno de los dos valores $w_{1}$ ó (excluyente) $w_{2}$ y lo pasamos por ambas operaciones ($+$ y $-$) del $\pm$ de la fórmula resolvente.
+		\item Tomamos ambos valores $w_{1}$ y $w_{2}$ y los pasamos únicamente por el $+$ del $\pm$ de la resolvente.
+		\item Tomamos uno de los dos valores $w_{1}$ ó (excluyente) $w_{2}$ y lo pasamos por ambas operaciones ($+$ y $-$) del $\pm$ de la fórmula resolvente.
 	\end{itemize}
 	
 	Dicho todo esto, yo voy a aplicar la primera regla para terminar los cálculos:
@@ -518,7 +518,7 @@
 	\subsubsection{17c}
 	c) $z=-e^{\imj \pi}$
 	
-	En este ejercicio hay que tener cuidado con considerar el $-1$ como el módulo de un número complejo. Tener siempre presente que el módulo siempre es un número positivo, a lo sumo $0$.\\
+	En este ejercicio hay que tener cuidado de NO considerar el $-1$ como el módulo del número complejo. Tener siempre presente que el módulo siempre es un número positivo, a lo sumo $0$.\\
 	En este caso, tenemos que considerar una multiplicación de números complejos. El número complejo $-1$ y el número complejo $e^{\imj\pi}$.\\
 	Entonces $z=\left[1;\pi\right]\cdot\left[1;\pi\right]=\left[1;2\pi\right]\equiv\left[1;0\right]$
 	
@@ -590,15 +590,15 @@
 	
 	$5\left(x^2+y^2\right)+3\mathrm{Re}\left(x^2+2xy\imj-y^2\right)\leq8\implies8x^2+2y^2\leq8\;\;$ Es una elipse de eje $y$ con centro en $\left(0,0\right)$ y su interior.
 	
-	Si pasamos los números de la primera parte a binómica y los probamos en la expresión de la elipse, nos vamos a dar cuenta que solo dos cumplen con la condición. Ellos son:
-	
-	\fcolorbox{black}{yellow}{$w_{1}=\left[\sqrt{2};\frac{11\pi}{20}\right]\;\;w_{3}=\left[\sqrt{2};\frac{27\pi}{20}\right]$}
-	
-	La gráfica de los puntos y la intersección es:
+	A continuación, podemos realizar la gráfica de los puntos y de la elipse:
 
 	\begin{center}
 		\includegraphics[scale=0.8]{01-NumerosComplejos/20b.JPG}
 	\end{center}
+
+	De esta manera podemos visualizar rápidamente cuál es la intersección de la solución de los dos conjuntos. Hay algunos números para los cuales no tendremos dudas que son o no son parte de la intersección (considerando que lo hacemos en una hoja, y no con un graficador, como yo), y en cambio, si queremos asegurarnos de otros números como el $w_{3}$ o el $w_{4}$, donde quizás en un gráfico hecho a mano no es muy clara la intersección, siempre podemos pasar los números del primer conjunto a binómica y luego verificar si cumplen la desigualdad del segundo.
+	
+	Por último, el conjunto solución es \fcolorbox{black}{yellow}{$\mathrm{B}=\left\lbrace \left[\sqrt{2};\frac{11\pi}{20}\right], \left[\sqrt{2};\frac{27\pi}{20}\right] \right\rbrace$}
 	\pagebreak
 	\section{Superposición de señales senoidales de igual frecuencia}
 	\subsection{Ejercicio 22d}
