@@ -206,13 +206,17 @@
 	\end{center}
 
 	Bien, en principio esta función no es ni par ni impar si miramos el gráfico. \\
-	Sin embargo, si observamos con detenimiento, no está muy lejos de ser una función impar. Pensemos en la siguiente gráfica:
+	Sin embargo, si observamos con detenimiento, no está muy lejos de ser una función impar. Pensemos en la siguiente gráfica (la de líneas punteadas):
 	
 	\begin{center}
 		\includegraphics[scale=0.53]{02-SerieYTransformadaDeFourier/final4_2.jpg}
 	\end{center}
 
-	La función graficada en líneas punteadas es impar, eso se ve claramente en el período que va desde $-1$ a $0$ y de $0$ a $1$ (que es el marcado en naranja).
+	La función graficada en líneas punteadas es impar, eso se ve claramente en el período que va desde $-1$ a $0$ y de $0$ a $1$ (que es el marcado en naranja). 
+	
+	De hecho, es la función $g(x)=1-x$ en $(0,2) \wedge g(x)=g(x+2)$. Comparando tanto las gráficas, como la definición de las funciones, podemos ver claramente que $f(x)=g(x) + 3$
+	
+	Luego, si llamamos $Sf(x)$ al desarrollo en serie de la función f, este se podría calcular como:\\ $Sf(x)=Sg(x)+3$
 	
 	Por lo tanto, podríamos pensar a la función del ejercicio como la suma de una función impar y una constante, por ende, la serie solo va a diferir en el término independiente.
 	
@@ -239,19 +243,19 @@
 	
 	Obtenemos los elementos notables: $T=2$, $L=1$, $\omega=\frac{\pi}{L}=\pi$
 	
-	$\displaystyle b_{n}= \frac{1}{L} \int_{-L}^{L} g(x)\cos(n\omega x) dx$
+	$\displaystyle b_{n}= \frac{1}{L} \int_{-L}^{L} g(x)\sen(n\omega x) dx$
 	
 	Pero como se aprendió en la teoría, podemos reescribirla como:
 	
-	$\displaystyle b_{n}= \frac{2}{L} \int_{0}^{L} g(x)\cos(n\omega x) dx$
+	$\displaystyle b_{n}= \frac{2}{L} \int_{0}^{L} g(x)\sen(n\omega x) dx$
 	
 	Reemplazamos nuestros valores:
 	
-	$\displaystyle b_{n}= \frac{2}{1} \int_{0}^{1} x\cos(n\pi x) dx=2\left[\frac{\cos(n\pi x)}{n^2\pi^2}+\frac{x\sen(n\pi x)}{n\pi}\right]_{0}^{1}$
+	$\displaystyle b_{n}= \frac{2}{1} \int_{0}^{1} x\sen(n\pi x) dx=2\left[\frac{\sen(n\pi x)}{n^2\pi^2}-\frac{x\cos(n\pi x)}{n\pi}\right]_{0}^{1}$
 	
 	Evaluamos:
 	
-	$\displaystyle b_{n}=2\left[\frac{\cos(n\pi)}{n^2\pi^2} + \frac{\sen(n\pi)}{n\pi} - \frac{\cos(0)}{n^2\pi^2} + \frac{0\sen(0)}{n\pi}\right]=\displaystyle b_{n}=2\left[\frac{\cos(n\pi)}{n^2\pi^2} + \frac{\sen(n\pi)}{n\pi} - \frac{1}{n^2\pi^2}\right]$
+	$\displaystyle b_{n}=2\left[\frac{\sen(n\pi)}{n^2\pi^2} - \frac{\cos(n\pi)}{n\pi} - \frac{\sen(0)}{n^2\pi^2} + \frac{0\cos(0)}{n\pi}\right]=\displaystyle b_{n}=2\left[\frac{\sen(n\pi)}{n^2\pi^2} - \frac{\cos(n\pi)}{n\pi}\right]$
 	
 	Ahora, analizando un poco los términos con coseno y seno, recordemos lo siguiente:
 	
@@ -261,19 +265,13 @@
 	
 	Por ende para los cosenos, podemos reemplazar $\cos(n\pi)$ por $(-1)^{n}$, y para los senos, directamente por $0$.
 	
-	La expresión queda entonces: $\displaystyle b_{n}=\frac{(-1)^n - 1}{n^2\pi^2}$
+	La expresión queda entonces: $\displaystyle b_{n}=-\frac{2(-1)^n}{n\pi}$
 	
-	La podemos pulir aún más a esta expresión, si $n$ es par, vemos que $b_{n}=0$, en cambio si $n$ es impar, nos queda $\displaystyle b_{n}=-\frac{2}{n^2\pi^2}$.
-	
-	Luego, con este último análisis la podemos reescribir de esta manera:
-	
-	$\displaystyle b_{k}=-\frac{2}{(2k+1)^2\pi^2}$
-	
-	La serie de $g$ es entonces: $\displaystyle Sg(x)=\sum_{0}^{\infty}-\frac{2}{(2k+1)^2\pi^2} \sen(n\pi x)$
+	La serie de $g$ es entonces: $\displaystyle Sg(x)=\sum_{n=1}^{\infty}-\frac{2(-1)^n}{n\pi} \sen(n\pi x)$
 	
 	Sin embargo, recordemos que nosotros en realidad buscamos la serie para $f$ !!!! Así que recordar lo que habíamos planteado al principio: $Sf(x)=Sg(x)+3$
 	
-	Por último: \fcolorbox{black}{yellow}{$\displaystyle Sf(x)=S(x)=3+ \sum_{0}^{\infty}-\frac{2}{(2k+1)^2\pi^2} \sen(n\pi x)$}
+	Por último: \fcolorbox{black}{yellow}{$\displaystyle Sf(x)=S(x)=3+ \sum_{n=1}^{\infty}-\frac{2(-1)^n}{n\pi} \sen(n\pi x)$}
 	\section{Ejercicio 6}
 	Final 12/05/2015. \textit{Desarrollar}:\\
 	Dada la función $   
