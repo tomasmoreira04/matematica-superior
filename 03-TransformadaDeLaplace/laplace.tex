@@ -23,6 +23,7 @@
 \pgfplotsset{compat=1.15}
 \usepackage{mathrsfs}
 \usetikzlibrary{arrows}
+\usepackage{emoji}
 
 \parindent 0ex
 
@@ -30,12 +31,16 @@
 
 \def\imj{\mathrm{j}}
 \def\sen{\mathrm{sen}}
-\def\lapl{\mathscr{L}}
+
+\newcommand{\lapl}[1]{\mathscr{L} \lbrace {#1} \rbrace}
+\newcommand{\ilapl}[1]{\mathscr{L}^{-1} \lbrace {#1} \rbrace}
 
 \renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
 \renewcommand{\baselinestretch}{1.1}
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
 		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+	
+\newcommand{\highlight}[2]{\colorbox{#1}{$\displaystyle #2$}}
 
 \graphicspath{{C:/Users/tomas/OneDrive/Escritorio/LATEX/matematica-superior/commons/img/}}
 
@@ -81,7 +86,178 @@
 	\setcounter{page}{1}
 	\section{Introducción}
 	\section{Transformada directa de Laplace - Propiedades}
-	\subsection{Ejercicio 1dz}
+	\subsection{Ejercicio 1d}
+	Los ejercicios que pertenecen al 1 son todos para aplicar la propiedad de linealidad y luego transformar por la tabla. Vamos a realizar uno a modo de ejemplo, y de paso nos va a servir para establecer una pauta para después.
+	
+	d) $y(t)=4\cos(3t)-5\sen(2t)\quad;\quad t>0$
+	
+	Nos piden hallar la Transformada de Laplace.
+	
+	Recuerden que a la función temporal, por convención, la denotamos con letra minúscula y está en el dominio del tiempo, mientras que su transformada la escribimos con mayúscula, y está en el dominio de Laplace. La variable que se usa comúnmente para las Transformadas de Laplace es $s$.
+	
+	Entonces, arranquemos a resolver, aplicando transformada a ambos lados.
+	
+	$\displaystyle \lapl{y(t)}=\lapl{4\cos\left(3t\right) - 5\sen\left(2t\right)}$
+	
+	Del lado izquierdo, tenemos que, por definición, $y(t)$ pasa a ser $Y(s)$ y, del lado derecho, vamos a aplicar linealidad.
+	
+	$\displaystyle Y(s)=4\lapl{\cos\left(3t\right)}-5\lapl{\sen\left(2t\right)}$
+	
+	Luego, revisando la tabla de transformadas, podemos transformar de forma directa:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{4s}{s^2+9}-\frac{10}{s^2+4}$}
+	
+	\textbf{ACLARACIÓN:} a partir de ahora la propiedad de linealidad la aplicaremos siempre sin mencionarla.
+	
+	\subsection{Ejercicios 2de}
+	Utilizando las propiedades de la Transformada de Laplace, halle $\lapl{f(t)}$
+	
+	\subsubsection{2d}
+	$f(t)=\left(t-1\right)^{4}\; ;\quad t>1$
+	
+	Los ejercicios del 2 implican todos aplicar alguna o algunas de las propiedades de la Transformada.
+	
+	En este caso, vemos que la función está desplazada una unidad hacia la derecha, y como consecuencia, y también el dominio está definido para los $t>1$. Por lo que podemos aplicar la \textbf{\underline{segunda propiedad}}\\
+	\textbf{\underline{de la traslación}}.
+	
+	Recordemos que decía la propiedad:
+	
+	Si $ \displaystyle
+	F(s)=\lapl{f(t)}\;\; \wedge\;\; 
+	g(t) = 
+	\begin{cases}
+		f(t-a) &\quad\text{si}\; t > a\\
+		0 &\quad\text{si}\; t < a \\
+	\end{cases}
+	\implies \lapl{g(t)}=e^{-as}F(s)$
+	
+	Por ende, aunque parezca un dato irrelevante, el $t>1$ termina siendo indispensable para aplicar esta propiedad. De este modo, si dijera $t>0$ como la gran mayoría de las funciones, \textbf{\underline{no} se podría aplicar la propiedad}.
+	Considerando esto, la transformada se calcularía:
+	
+	Hacemos $a=1$
+	
+	Y calculamos la transformada de Laplace de la función $f$ ``sin considerar el desplazamiento".
+	
+	$\displaystyle F(s)=\frac{1}{s^2}$, luego aplicamos la propiedad de traslación, para que finalmente quede:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle F(s)=\frac{24e^{-s}}{s^5}$}
+	
+	\subsubsection{2e}
+	$f(t)=e^{-2t}\sen (2t)+t^{2}e^{3t} \;;\; t>0$
+	
+	Para este ejercicio hay que poner en práctica la primera propiedad de la traslación.
+	
+	Recordémosla:
+	
+	Sea $F(s)=\lapl{f(t)} \implies \lapl{e^{at}f(t)}=F(s-a)$
+	
+	Esto quiere decir que multiplicar por una exponencial en el dominio del tiempo, genera un desplazamiento en el dominio de Laplace.
+	
+    ``En criollo'' podemos decir que transformamos la función sin considerar la exponencial, y luego, reemplazamos $s$ por $s-a$.
+    
+    Para este caso entonces, primero hallamos $\lapl{\sen(2t)}$ y $\lapl{t^{2}}$. Estas dos, salen por tabla:
+    
+    $\displaystyle \lapl{\sen(2t)}=\frac{2}{s^{2}+4}$
+    
+    $\displaystyle \lapl{t^{2}}=\frac{2}{s^{3}}$
+    
+    Y, como dijimos, ahora reemplazamos $s$ por $s-a$. En el caso de la sinusoide, $a=-2$ y para el segundo término $a=3$.
+    
+    Nos queda finalmente:
+    
+    \fcolorbox{black}{yellow}{$\displaystyle F(s)=\frac{2}{(s+2)^{2}+4}+\frac{2}{(s-2)^{3}}$}
+    
+    \subsection{Ejercicios 3abcdef}
+    Calcule las transformadas de Laplace aplicando adecuadamente alguna propiedad conveniente o algún paso algebraico:
+    
+    \subsubsection{3a}
+    $\displaystyle y(t)=\frac{1}{a^{2}} \;;\;0<t<a$
+    
+    Este ejercicio tiene la particularidad de que no está en el dominio de la integral de Laplace (desde 0 a infinito), sino que está acotada entre a un cierto dominio del tiempo. Para poder resolverlo, debemos recurrir a la función escalón unitario, o función de Heaviside.
+    
+    Un posible gráfico de la función que se nos presenta en el ejercicio, es:
+    
+    \includegraphics[scale=0.6]{03-TransformadaDeLaplace/3a1.png}
+    
+    Mirando esto, podemos sacar partido de la función escalón unitario, y redefinir a la función en términos de ella:
+    
+    $\displaystyle y(t)=\frac{1}{a^{2}}E(t)-\frac{1}{a^{2}}E(t-a)$
+    
+    Básicamente, lo que estamos haciendo es multiplicar a nuestra función por una función escalón unitario, lo cual nos daría todo el trozo que corresponde a su dominio, y luego, le restamos la parte que no consideramos (ya que para valores mayores a $a$, la función es 0).
+    
+    Algo a considerar es que no hace falta ``restar'' la parte de $t<0$, ya que la función escalón unitario está definida para $t \geq 0$.
+    
+    Luego, transformamos la función que tenemos. 
+    
+    \textbf{\underline{NOTA:}} 
+    
+    $\displaystyle \lapl{E(t)}=\frac{1}{s}$
+    
+    $\displaystyle \lapl{E(t-a)}=\frac{e^{-as}}{s}$
+    
+    $\displaystyle \lapl{y(t)}=\frac{1}{a^{2}} \cdot \frac{1}{s}+ \frac{1}{a^{2}} \cdot \frac{e^{-as}}{s} \implies$
+    \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{1-e^{-as}}{a^{2}s}$}
+    
+    \subsubsection{3b}
+    $y(t)=\sen \left(5t+\frac{\pi}{3} \right)\;;\;t>0$
+    
+    Para resolver este ejercicio, hay que darse cuenta que no se puede aplicar la segunda propiedad de la traslación, ya que no se cumplen las condiciones para poder aplicarla.
+    
+    Resulta, entonces, que hay que hacer un paso extra para poder transformar esta función. En este caso, basta con aplicar el seno de la suma:
+    
+    $\displaystyle y(t)=\sen \left(5t\right)\cdot \cos\left(\frac{\pi}{3}\right)+ \sen\left(\frac{\pi}{3}\right)\cdot\cos\left(5t\right)$
+    
+    Calculamos los números: $\displaystyle y(t)=\frac{1}{2}\sen(5t)+\frac{\sqrt{3}}{2}cos(5t)$
+    
+    Transformamos usando la tabla: $\displaystyle Y(s)=\frac{1}{2}\frac{5}{s^{2}+25}+\frac{\sqrt{3}}{2}\frac{s}{s^{2}+25}\implies$ \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{\sqrt{3}s+5}{2\left(s^{2}+25\right)}$}
+    
+    \subsubsection{3c}
+    $y(t)=\cos^{3}(t)$
+    
+    Se puede proceder de muchas maneras para resolver este ejercicio. Yo voy a optar por transformar esta expresión en una equivalente.
+    
+    Si usamos la forma exponencial del coseno: (recordar) $\displaystyle cos(a)=\frac{e^{aj}+e^{-aj}}{2}$
+    
+    $\displaystyle y(t)=\left(\frac{e^{jt}+e^{-jt}}{2}\right)^{3}
+    =\frac{e^{3jt}}{8}+\frac{3e^{2jt}\cdot e^{-jt}}{8}+\frac{3e^{jt}\cdot e^{-2jt}}{8}+\frac{e^{-3jt}}{8}$
+    
+    Operando, ordenando y agrupando convenientemente: $\displaystyle y(t)=
+    \frac{\highlight{yellow}{ e^{3jt}+e^{-3jt}}}{\highlight{yellow}{2}\cdot4}+\frac{3\left( \highlight{green}{e^{jt}+e^{-jt}} \right)} {\highlight{green}{2}\cdot4}$
+    
+    Si nos damos cuenta, lo sombreado con amarillo y con verde, representan también la forma exponencial de un coseno, entonces, lo reemplazamos:
+    
+    $\displaystyle y(t)=\frac{1}{4}\cos(3t)+\frac{3}{4}\cos(t)$
+    
+    Ahora, estamos en condiciones de transformar directamente: \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{1}{4}\cdot \frac{s}{s^{2}+9}+\frac{3}{4}\cdot \frac{s}{s^{2}+1}$}
+    
+    \subsubsection{3d}
+    $y(t)=a^{t} \; ; \; t>0 \; ; \; a \in \mathbb{R}^{+}$
+    
+    Aplicamos logaritmo a ambos miembros
+    
+    $\ln(y(t))=t \ln(a)$
+    
+    $ \displaystyle e^{\ln(y(t))}=e^{t\cdot ln(a)} \implies y(t)=e^{\ln(a)t}$
+    
+    ¡Que no panda el cúnico! el $\ln(a)$ es un número! Entonces, podemos transformar directamente usando la tabla para la exponencial:
+    
+    \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{1}{s-\ln(a)}$}
+    
+    \subsubsection{3e}
+    $y(t)=(t-1)^{4} \; ; \; t>0$
+    
+    Este ejercicio es una variante del ejercicio 2d. ¿Cuál es la diferencia? El dominio donde está definida la función. Para el ejercicio 2d, decía claramente $t>1$, de forma tal que podíamos aplicar la segunda propiedad de la traslación.
+    
+    En este caso, no coincide el desplazamiento de la función, con el dominio. Por ende, no se cumplen las hipótesis para aplicar la propiedad.
+    
+    ¿Qué hacemos? Desarrollamos el binomio y transformamos el resultado. Entonces:
+    
+    $y(t)=t^{4}-4t^{3}+6t^{2}-4t+1$
+    
+    $\displaystyle \lapl{y(t)}=\frac{4!}{s^{5}}-4\frac{3!}{s^{4}}+6\frac{2!}{s^{3}}-4\frac{1!}{s^{2}}+\frac{1}{s}$
+    
+    \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{24}{s^{5}}-\frac{24}{s^{4}}+\frac{12}{s^{3}}-\frac{4}{s^{2}}+\frac{1}{s}$}
+	
 	\section{Antitransformada de Laplace - Propiedades}
 	\section{Resolución de ecuaciones diferenciales}
 	\section{Evaluación de integrales}
