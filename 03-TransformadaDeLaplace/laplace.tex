@@ -31,8 +31,8 @@
 \def\imj{\mathrm{j}}
 \def\sen{\mathrm{sen}}
 
-\newcommand{\lapl}[1]{\mathscr{L} \lbrace {#1} \rbrace}
-\newcommand{\ilapl}[1]{\mathscr{L}^{-1} \lbrace {#1} \rbrace}
+\newcommand{\lapl}[1]{\mathscr{L} \left\lbrace {#1} \right\rbrace}
+\newcommand{\ilapl}[1]{\mathscr{L}^{-1} \left\lbrace {#1} \right\rbrace}
 
 \renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
 \renewcommand{\baselinestretch}{1.1}
@@ -86,7 +86,7 @@
 
 	\setcounter{page}{1}
 	\section{Introducción}
-	\section{Transformada directa de Laplace - Propiedades}
+	\section{Parte 1: Transformada directa de Laplace - Propiedades}
 	\subsection{Ejercicio 1d}
 	Los ejercicios que pertenecen al 1 son todos para aplicar la propiedad de linealidad y luego transformar por la tabla. Vamos a realizar uno a modo de ejemplo, y de paso nos va a servir para establecer una pauta para después.
 	
@@ -277,9 +277,102 @@
 	
 	Por último: \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{5s^2+105}{(s^2+49)(s^2+9)}$}
 	
-	\section{Antitransformada de Laplace - Propiedades}
-	\section{Resolución de ecuaciones diferenciales}
-	\section{Evaluación de integrales}
+	\subsection{Ejercicio 4}
+	Sea $\displaystyle f(t)=k\sen\left(2t+\frac{\pi}{6}\right)$. Determine el valor de $k$ sabiendo que $\lim\limits_{s \rightarrow \infty} sF(s)=4$.\\
+	Recuerde el teorema de valor inicial.
+	
+	Tal como sugiere el ejercicio, debemos aplicar el teorema de valor inicial. ¿Qué nos decía?
+	
+	Decía que: $\lim\limits_{t \rightarrow 0} f(t)=\lim\limits_{s \rightarrow \infty}sF(s)$
+	
+	A nosotros nos están dando como dato el miembro derecho de la igualdad. Entonces queda calcular el límite del miembro izquierdo.
+	
+	$\displaystyle \lim\limits_{t \rightarrow 0}k\sen\left(2t+\frac{\pi}{6}\right)=4 \implies k\cdot\sen\left(\frac{\pi}{6}\right)=4 \implies k\cdot \frac{1}{2}=4 \implies$
+	\fcolorbox{black}{yellow}{$k=8$}
+	
+	\section{Parte 2: Antitransformada de Laplace - Propiedades}
+	\subsection{Ejercicios 5afg}
+	Calcule las Antitransformadas de Laplace de las siguientes funciones.
+	
+	\subsubsection{5a}
+	$\displaystyle Y(s)=\frac{25}{s^{3}}$
+	
+	Para los ejercicios de Antitransformada, siempre hay que mirar la tabla de transformadas, pero ``al revés''. Es muy parecido a como hicimos para las transformadas. A veces puede darse el caso en que necesitemos hacer algún paso algebráico o, como vamos a ver en el ejercicio 6, aplicar fracciones simples.
+	
+	Para este caso, primero aplicamos linealidad, y luego hacemos la antitransformada directa:
+	
+	$\displaystyle \ilapl{Y(s)}=25\ilapl{\frac{1}{s^{3}}}$
+	
+	Por definición, $\ilapl{Y(s)}=y(t)$. Luego, para antitransformar la otra función, necesitamos un $2$ en el numerador. Como no lo tenemos, lo generamos y luego compensamos:
+	
+	$\displaystyle y(t)=\frac{25}{2}\ilapl{\frac{2}{s^{3}}} \implies$ \fcolorbox{black}{yellow}{$\displaystyle y(t)=\frac{25}{2}t^{2}$}
+	
+	\subsubsection{5f}
+	$\displaystyle Y(s)=\frac{s+3}{s^{2}+6s+13}$
+	
+	Esta función si la observamos minuciosamente se puede asemejar (aunque no es igual) a un coseno transformado.
+	
+	En el denominador, podemos llegar a formar un trinomio cuadrado perfecto. Tenemos el $s^{2}$ y el $6s$, el término independiente es incorrecto.
+	
+	Si no te acordás como formarlo, una ayudita rápida:
+	
+	Tomamos el coeficiente del término lineal: $6$, y lo dividimos entre $2$: $\frac{6}{2}=3$. A este resultado, lo elevamos al cuadrado $3^{2}=\boxed{9}$
+	
+	Este último número es el que debemos usar para tener un trinomio cuadrado perfecto. Entonces, para obtenerlo, vamos a separar el término independiente del denominador en $9+4$:
+	
+	$\displaystyle Y(s)=\frac{s+3}{s^{2}+6s+9+4}=\frac{s+3}{(s+3)^{2}+4}$
+	
+	Ahora sí, esto se parece mucho más a un coseno, lo que tiene es que está desplazado. ¿Te acordás que propiedad genera un desplazamiento en el dominio de Laplace?
+	
+	Pensalo 3 segundos...
+	3...\\
+	2...\\
+	1...\\
+	
+	¡Si! La \textbf{primera propiedad de la traslación}. Ahora, la tenemos que aplicar a la inversa.
+	
+	\textbf{ATENCIÓN, IMPORTANTE!!!!!:} para poder aplicar la propiedad, en el caso del coseno necesitamos que \textbf{\underline{TODAS}} las $s$ estén desplazadas. Es decir, que si tengo: $\displaystyle Y(s)=\frac{s}{(s+3)^{2}+4}$ no podríamos aplicar la propiedad, en principio. Tendríamos que aplicar una serie de pasos algebraicos adicionales (ya tendremos la oportunidad de hacerlos, en este caso, está hecho a propósito).
+	
+	Dicho esto, antitransformamos. El tip que va a servirte es que antitransformemos haciendo de cuenta que en vez de $s+3$ tenemos $s$, y luego, en el dominio del tiempo hacemos la corrección que haga falta.
+	
+	$\displaystyle \ilapl{Y_{2}(s)}=\ilapl{\frac{s}{s^{2}+4}} \implies y_{2}(t)=\cos(2t)$
+	
+	Para obtener la $y(t)$, multiplicamos por la exponencial de la propiedad: \fcolorbox{black}{yellow}{$y(t)=e^{-3t}\cos(2t)$}
+	
+	\subsubsection{5g}
+	$\displaystyle Y(s)=\frac{s-1}{s^{2}+2s+2}$
+	
+	Este ejercicio va a servir para poner en ejemplo la advertencia que hicimos en el anterior.
+	
+	Vamos primero a armar el trinomio cuadrado perfecto del denominador:
+	
+	$\displaystyle Y(s)=\frac{s-1}{s^{2}+2s+1+1}=\frac{s-1}{(s+1)^{2}+1}$.
+	
+	En este caso, vemos que no coinciden las ``s'', ya que una es $s+1$ y la otra $s-1$. No podemos aplicar la propiedad (directamente).
+	
+	Entonces, vamos a hacer una jugarreta. En el numerador sumamos y restamos 1:
+	
+	$\displaystyle Y(s)=\frac{s-1+1-1}{(s+1)^{2}+1} \;\;\;$. Agrupamos convenientemente: $\displaystyle Y(s)=\frac{s+1-2}{(s+1)^{2}+1}$
+	
+	Distribuyendo: $\displaystyle Y(s)=\frac{s+1}{(s+1)^2+1}-\frac{2}{(s+1)^2+1}$
+	
+	Y ahora si, podemos antitransformar directamente, considerando la traslación como hicimos en el ejercicio anterior:
+	
+	\fcolorbox{black}{yellow}{$y(t)=\cos(t)e^{-t}-2\sen(t)e^{-t}$}
+	
+	\subsection{Ejercicios 6bij}
+	Calcule las Antitransformadas de Laplace de las siguientes funciones previamente separando en fracciones simples.
+	
+	\subsubsection{6b}
+	$\displaystyle Y(s)=\frac{s^{2}+2s+2}{s^{2}+3s+2}$
+	\subsubsection{6i}
+	$\displaystyle Y(s)=\frac{-2s^{2}+8s-14}{(s+1)(s^{2}-2s+5)}$
+	\subsubsection{6j}
+	$\displaystyle Y(s)=\frac{(4s+2)e^{-2s}}{(s-1)(s+2)}$
+	
+	\section{Parte 3: Resolución de ecuaciones diferenciales}
+	\section{Parte 4: Convolución}
+	\section{Parte 5: Evaluación de integrales}
 	\section{Ejercicios bonus}
 	\section{Ejercicios para curiosos}
 \end{document}
