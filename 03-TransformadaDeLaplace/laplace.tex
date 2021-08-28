@@ -360,15 +360,71 @@
 	
 	\fcolorbox{black}{yellow}{$y(t)=\cos(t)e^{-t}-2\sen(t)e^{-t}$}
 	
-	\subsection{Ejercicios 6bij}
+	\subsection{Ejercicios 6abij}
 	Calcule las Antitransformadas de Laplace de las siguientes funciones previamente separando en fracciones simples.
 	
+	\subsubsection{6a}
+	$\displaystyle F(s)=\frac{s+7}{s^2-6s+5}$
+	Para resolver estos ejercicios, como nos dice el enunciado, debemos separar en fracciones simples.
+	
+	Para hacer eso, se procede a factorizar el denominador. Luego, el planteo varía según el ejercicio.
+	
+	Consideremos el siguiente cociente: $\frac{P(x)}{Q(x)}$
+	
+	La primera condición que tenemos que verificar es que el \textbf{$gr(P(x)) < gr(Q(x))$}
+	
+	Luego, hay que hacer un análisis de distintos casos que nos pueden aparecer.
+	
+	\textit{1)} \textbf{Si $Q(x)$ tiene raíces reales distintas}
+	
+	$\displaystyle \frac{P(x)}{Q(x)}=\frac{A}{x-\alpha}+\frac{B}{x-\beta}+...+\frac{H}{x-\gamma}$
+	
+	\textit{2)} \textbf{Si $Q(x)$ tiene raíces reales múltiples}
+	
+	$\displaystyle \frac{P(x)}{(x-\alpha)^n}=\frac{A}{(x-\alpha)^{n}}+\frac{B}{(x-\alpha)^{n-1}}+...+\frac{H}{x-\alpha}$
+	
+	\textit{3)} \textbf{Si $Q(x)$ tiene raíces complejas conjugadas}
+	
+	$\displaystyle \frac{P(x)}{ax^2+bx+c}=\frac{Ax+B}{ax^2+bx+c} \;\; ; \; \; b^2-4ac<0$
+	
+	\textit{4)} \textbf{Si $Q(x)$ tiene raíces complejas conjugadas múltiples} (el peor caso)
+	
+	$\displaystyle \frac{P(x)}{(ax^2+bx+c)^n}=\frac{Ax+B}{(ax^2+bx+c)^n}+\frac{Cx+D}{(ax^2+bx+c)^{n-1}}+...+\frac{Hx+I}{ax^2+bx+c}\;\; ; \; \; b^2-4ac<0$
+	
+	Con toda esta teoría planteada, vamos a resolver el ejercicio en cuestión.
+	
+	Vemos que cumple la condición del grado, y es un ejercicio del tipo 1). Factorizamos el denominador:
+	
+	$\displaystyle F(s)=\frac{s+7}{s^2-6s+5}=\frac{s+7}{(s-5)(s-1)}$
+	
+	Planteamos las fracciones simples:
+	\\ $\displaystyle \frac{s+7}{(s-5)(s-1)}=\frac{A}{s-5}+\frac{B}{s-1}$
+	
+	Tenemos que resolver para $A$ y para $B$:
+	
+	$s+7=A(s-1)+B(s-5) \implies s+7=As-A+Bs-5B$
+	
+	Para que esta igualdad se cumpla, deben ser iguales los dos miembros coeficiente a coeficiente:
+	
+	Para las $s$:\\
+	$1=A+B \rightarrow \boxed{B=1-A} \;\;\;\; \circled{1}$
+	
+	Para los términos independientes:\\
+	$7=-A-5B \rightarrow \mathrm{Aplicando\; \circled{1}} \rightarrow 7=-A-5(1-A)\rightarrow 7=-A-5+5A \rightarrow 12=4A \rightarrow \boxed{A=3}$
+	
+	Reemplazando el resultado de $A$ en \circled{1} queda: $B=1-3\rightarrow \boxed{B=-2}$
+	
+	Por lo tanto, nuestra función ya con fracciones simples queda: $\displaystyle F(s)=\frac{3}{s-5}+\frac{-2}{s-1}$
+	
+	Antitransformando, nos queda finalmente: \fcolorbox{black}{yellow}{$f(t)=3e^{5t}-2e^{t}$}
 	\subsubsection{6b}
-	$\displaystyle Y(s)=\frac{s^{2}+2s+2}{s^{2}+3s+2}$
+	$\displaystyle F(s)=\frac{s^{2}+2s+2}{s^{2}+3s+2}$
+	
 	\subsubsection{6i}
-	$\displaystyle Y(s)=\frac{-2s^{2}+8s-14}{(s+1)(s^{2}-2s+5)}$
+	$\displaystyle F(s)=\frac{-2s^{2}+8s-14}{(s+1)(s^{2}-2s+5)}$
+	
 	\subsubsection{6j}
-	$\displaystyle Y(s)=\frac{(4s+2)e^{-2s}}{(s-1)(s+2)}$
+	$\displaystyle F(s)=\frac{(4s+2)e^{-2s}}{(s-1)(s+2)}$
 	
 	\section{Parte 3: Resolución de ecuaciones diferenciales}
 	\section{Parte 4: Convolución}
