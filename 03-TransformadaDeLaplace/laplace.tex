@@ -18,11 +18,15 @@
 \usepackage{textcomp}
 \usepackage{pgfplots}
 \usepackage{tikz}
+\usepackage{polynom}
 \usetikzlibrary{datavisualization}
 \usetikzlibrary{datavisualization.formats.functions}
 \pgfplotsset{compat=1.15}
 \usepackage{mathrsfs}
 \usetikzlibrary{arrows}
+
+\newcommand{\dropsign}[1]{\smash{\llap{\raisebox{-.5\normalbaselineskip}{$#1$\hspace{2\arraycolsep}}}}}%
+
 
 \parindent 0ex
 
@@ -166,7 +170,7 @@
     
     Nos queda finalmente:
     
-    \fcolorbox{black}{yellow}{$\displaystyle F(s)=\frac{2}{(s+2)^{2}+4}+\frac{2}{(s-2)^{3}}$}
+    \fcolorbox{black}{yellow}{$\displaystyle F(s)=\frac{2}{(s+2)^{2}+4}+\frac{2}{(s-3)^{3}}$}
     
     \subsection{Ejercicios 3abcdef}
     Calcule las transformadas de Laplace aplicando adecuadamente alguna propiedad conveniente o algún paso algebraico:
@@ -196,7 +200,7 @@
     
     $\displaystyle \lapl{E(t-a)}=\frac{e^{-as}}{s}$
     
-    $\displaystyle \lapl{y(t)}=\frac{1}{a^{2}} \cdot \frac{1}{s}+ \frac{1}{a^{2}} \cdot \frac{e^{-as}}{s} \implies$
+    $\displaystyle \lapl{y(t)}=\frac{1}{a^{2}} \cdot \frac{1}{s}- \frac{1}{a^{2}} \cdot \frac{e^{-as}}{s} \implies$
     \fcolorbox{black}{yellow}{$\displaystyle Y(s)=\frac{1-e^{-as}}{a^{2}s}$}
     
     \subsubsection{3b}
@@ -420,15 +424,501 @@
 	\subsubsection{6b}
 	$\displaystyle F(s)=\frac{s^{2}+2s+2}{s^{2}+3s+2}$
 	
+	En este ejercicio tenemos un pequeño problema. No podemos aplicar fracciones simples, debido a que $gr(P(x)) \ge gr(Q(x))$
+	
+	Para saldar ese problema hay que hacer la división de los polinomios, es decir expresar: \\$\displaystyle \frac{P(x)}{Q(x)}=C(x)+\frac{R(x)}{Q(x)}$
+	
+	\[
+	\begin{array}{r|r}
+		\dropsign{-} s^2 + 2s + 2 & s^2 + 3s + 2 \\ \cline{2-2}
+		s^2 + 3s + 2 & 1 \\ \cline{1-1} \\[\dimexpr-\normalbaselineskip+\jot]
+		-s \phantom{+00}\\
+	\end{array}
+	\]
+	
+	Entonces, la función queda expresada:\\
+	$\displaystyle F(s)=1 + \frac{-s}{s^2+3s+2} \implies F(s)=1-\frac{s}{(s+1)(s+2)}$
+	
+	
+	Fracciones simples:
+	
+	$\displaystyle F(s)=1+\frac{A}{s+1}+\frac{B}{s+2} \implies F(s)=1+\frac{1}{s+1}+\frac{-2}{s+2}$
+	
+	\fcolorbox{black}{yellow}{$\ilapl{F(s)}=f(t)=\delta(t)+e^{-t}-2e^{-2t}$}
+	
 	\subsubsection{6i}
 	$\displaystyle F(s)=\frac{-2s^{2}+8s-14}{(s+1)(s^{2}-2s+5)}$
+	
+	Procedemos a aplicar fracciones simples, teniendo cuidado de que el segundo factor del denominador tiene raíces complejas:
+	
+	$\displaystyle \frac{-2s^2+8s-14}{(s+1)(s^2-2s+5)}=\frac{\cancelto{-3}{A}}{s+1}+\frac{Bs+C}{s^2-2s+5}$
+	
+	$\displaystyle -2s^2+8s-14=-3(s^2-2s+5)+(Bs+C)(s+1)$\\
+	$\displaystyle -2s^2+8s-14=-3s^2+6s-15+Bs^2+Bs+Cs+C$
+	
+	Igualamos grado a grado:\\
+	$-2=-3+B \rightarrow B=1$\\
+	$8=6+B+C \rightarrow 8=6+1+1 \rightarrow \text{Verifica}$\\
+	$-14=-15+C \rightarrow C=1$
+	
+	Queda, entonces, nuestra $F(s)$ como:
+	
+	$\displaystyle F(s)=\frac{-3}{s+1}+\frac{s+1}{s^2-2s+5}=\frac{-3}{s+1}+\frac{s+1}{(s-1)^2+4}$
+	
+	Ahora bien, uno podría decir ``distribuyo el denominador del segundo término'' y antitransformo en consecuencia, es decir, hacer algo así:
+	
+	$\displaystyle F(s)=\frac{-3}{s+1}+\frac{s+1}{s^2-2s+5}=\frac{-3}{s+1}+\frac{s}{(s-1)^2+4}+\frac{1}{(s-1)^2+4}$
+	
+	Sin embargo, hacer esto es un gran error, y uno bastante común, de hecho. El segundo término de la expresión de aquí arriba debe tener a todas las $s$ trasladadas, es decir, que para poder antitransformar sin problemas en el numerador debería decir $s-1$.
+	
+	Entonces, ¿qué hacemos? Si! Restamos y sumamos un uno ;). Volviendo a la expresión original:
+	
+	$\displaystyle F(s)=\frac{-3}{s+1}+\frac{s+1}{s^2-2s+5}=\frac{-3}{s+1}+\frac{s+1+1-1}{(s-1)^2+4}$
+	
+	Agrupamos convenientemente:
+	
+	$\displaystyle F(s)=\frac{-3}{s+1}+\frac{s+1}{s^2-2s+5}=\frac{-3}{s+1}+\frac{s-1+2}{(s-1)^2+4}$
+	
+	Ahora si, distribuimos:
+	
+	$\displaystyle F(s)=\frac{-3}{s+1}+\frac{s+1}{s^2-2s+5}=\frac{-3}{s+1}+\frac{s-1}{(s-1)^2+4}+\frac{2}{(s-1)^2+4}$
+	
+	Antitransformamos y obtenemos la respuesta:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle f(t)=-3e^{-t}+\cos(2t)e^t+\sen(2t)e^t$}
 	
 	\subsubsection{6j}
 	$\displaystyle F(s)=\frac{(4s+2)e^{-2s}}{(s-1)(s+2)}$
 	
+	**Próximamente**
+	
 	\section{Parte 3: Resolución de ecuaciones diferenciales}
+	\subsection{Ejercicios 8egi}
+	Resuelva las siguientes Ecuaciones Diferenciales por Transformada de Laplace:
+	\subsubsection{8e}
+	$y''(t)+4y'(t)+4y(t)=3x'(t)+2x(t) \;\;\;\;\; \mathrm{con} \; x(t)=e^{-5t} \wedge y(0)=0 \wedge y'(0)=0$
+	
+	Para resolver estos ejercicios, la estrella es la propiedad de ``Transformada de Laplace de las derivadas''.
+	
+	Pero primero, nos dan el dato de $x(t)$, que podemos reemplazar.\\
+	Calculemos $x'(t)$
+	
+	$x'(t)=-5e^{-5t}$
+	
+	Reemplazamos esto en nuestra ecuación:
+	
+	$y''(t)+4y'(t)+4y(t)=3\left(-5e^{-5t}\right)+2e^{-5t} \rightarrow \boxed{y''(t)+4y'(t)+4y(t)=-13e^{-5t}}$
+	
+	Transformamos:
+	
+	$\displaystyle s^2Y(s)-sy(0)-y'(0)+4sY(s)-y(0)+4Y(s)=\frac{-13}{s+5}$
+	
+	$\displaystyle s^2Y(s)-\cancelto{0}{sy(0)}-\cancelto{0}{y'(0)}+4sY(s)-\cancelto{0}{y(0)}+4Y(s)=\frac{-13}{s+5}$
+	
+	$\displaystyle Y(s)\left(s^2+4s+4\right)=\frac{-13}{s+5}$
+	
+	Ahora, despejamos nuestra función objetivo $Y(s)$:
+	
+	$\displaystyle Y(s)=\frac{-13}{(s+5)(s^2+4s+4)}$
+	
+	El siguiente paso en estos ejercicios es antitransformar la función que despejamos. En este caso, debemos aplicar fracciones simples:
+	
+	$\displaystyle Y(s)=\frac{-13}{(s+5)(s+2)^{2}}$
+	
+	$\displaystyle \frac{-13}{(s+5)(s+2)^2}=\frac{A}{s+5}+\frac{B}{(s+2)^2}+\frac{C}{s+2}$
+	
+	Resolviendo: $\displaystyle A=\frac{-13}{9}\;\;\;;B=\frac{-13}{3}\;\;\;;C=\frac{13}{9}\;\;\;$
+	
+	$\displaystyle Y(s)=\frac{-\frac{13}{9}}{s+5}+\frac{-\frac{13}{3}}{(s+2)^2}+\frac{\frac{13}{9}}{s+2}$
+	
+	\fcolorbox{black}{yellow}{$\displaystyle y(t)=-\frac{13}{9}e^{-5t}-\frac{13}{3}te^{-2t}+\frac{13}{9}e^{-2t}$}
+	
+	\subsubsection{8g}
+	$y''(t)-2y'(t)+5y(t)=-8e^{-t} \;\;\;\;\; \mathrm{con} \; y(0)=2 \wedge y'(0)=12$
+	
+	Transformamos:
+		
+	$\displaystyle s^2Y(s)-s\cancelto{2}{y(0)}-\cancelto{12}{y'(0)}-2sY(s)+2\cancelto{2}{y(0)}+5Y(s)=-\frac{-8}{s+1}$
+	
+	$\displaystyle Y(s)(s^2-2s+5)-2s-12+4=\frac{-8}{s+1}$
+	
+	$\displaystyle Y(s)(s^2-2s+5)=\frac{-8}{s+1}+2s+8$
+	
+	$\displaystyle Y(s)=\frac{2s^2+10s}{(s+1)(s^2-2s+5)}$
+	
+	Ahora, aplicamos fracciones simples:
+	
+	$\displaystyle \frac{2s^2+10s}{(s+1)(s^2-2s+5)}=\frac{\cancelto{-1}{A}}{s+1}+\frac{Bs+C}{s^2-2s+5}$
+	
+	$\displaystyle 2s^2+10s=-s^2+2s-5+Bs^2+Bs+Cs+C$
+	
+	$\displaystyle 2=-1+B \rightarrow \boxed{B=3}$ \\
+	$\displaystyle 10=2+B+C \rightarrow \mathrm{Verifica}$ \\
+	$\displaystyle 0=-5+C$ $\rightarrow \boxed{C=5}$
+	
+	$\displaystyle Y(s)=\frac{-1}{s+1}+\frac{3s+5}{s^2-2s+5}=\frac{-1}{s+1}+\frac{3s+5}{\boxed{s^2-2s+1}+4}=\frac{-1}{s+1}+\frac{3s+5}{(s-1)^2+4}$
+	
+	Para poder antitransformar esta función, primero debemos resolver el $s-1$ del segundo término, para eso, sumamos y restamos un uno en el numerador:
+	
+	$\displaystyle \frac{3(s-1+1)+5}{(s-1)^2+4}=\frac{3(s-1)+3+5}{(s-1)^2+4}=\frac{3(s-1)}{(s-1)^2+4}+\frac{8}{(s-1)^2+4}$
+	
+	$\displaystyle Y(s)=\frac{-1}{s+1}+\frac{3(s-1)}{(s-1)^2+4}+4\frac{2}{(s-1)^2+4}$
+	
+	Ahora si, podemos antitransformar:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle y(t)=-e^{-t}+3\cos(2t)e^t+4\sen(2t)e^t$}
+	
+	\subsubsection{8i}
+	$\displaystyle y''(t)+9y(t)=\cos(2t) \;\;\;\;\; \mathrm{con} \; y(0)=1 \wedge y\left(\frac{\pi}{2}\right)=-1$
+	
+	Transformamos:
+	
+	$\displaystyle s^2Y(s)-s\cancelto{1}{y(0)}-y'(0)+9Y(s)=\frac{s}{s^2+4}$
+	
+	Llamamos $y'(0)=k$
+	
+	$\displaystyle Y(s)(s^2+9)=\frac{s}{s^2+4}+s+k$
+	
+	$\displaystyle Y(s)=\frac{s^3+ks^2+5s+4k}{(s^2+4)(s^2+9)}$
+	
+	Aplicamos fracciones simples:
+	
+	$\displaystyle \frac{s^3+ks^2+5s+4k}{(s^2+4)(s^2+9)}=\frac{As+B}{s^2+4}+\frac{Cs+D}{s^2+9}$
+	
+	$s^3+ks^2+5s+4k=As^3+Bs^2+9As+9B+Cs^3+Ds^2+4Cs+4D$
+	
+	$1=A+C \;\; \circled{1}$\\
+	$k=B+D \;\;\circled{2}$\\
+	$5=9A+4C \;\;\circled{3}$\\
+	$4k=9B+4D \;\;\circled{4}$\\
+	
+	De \circled{1}:\\ $1-A=C$
+	
+	En \circled{3}:\\ $\displaystyle 5=9A+4(1-A) \rightarrow 5=9A+4-4A \rightarrow 5=5A+4 \rightarrow \boxed{A=\frac{1}{5}}$
+	
+	En \circled{1}: $1-\frac{1}{5}=C \rightarrow \boxed{C=\frac{4}{5}}$
+		
+	Luego, de \circled{2}: \\$k-B=D$
+	
+	En \circled{4}: \\$4k=9B+4(k-B) \rightarrow 4k=9B+4k-4B \rightarrow 0=5B \rightarrow \boxed{B=0}$
+	
+	De donde $k-B=D \rightarrow \boxed{k=D}$
+	
+	Entonces, $\displaystyle Y(s)=\frac{\frac{1}{5}s}{s^2+4}+\frac{\frac{4}{5}s+k}{s^2+9}=\frac{\frac{1}{5}s}{s^2+4}+\frac{\frac{4}{5}s}{s^2+9}+\frac{k}{3}\cdot\frac{3}{s^2+9}$
+	
+	Antitransformamos:
+	
+	$\displaystyle y(t)=\frac{1}{5}\cos(2t)+\frac{4}{5}\cos(3t)+\frac{k}{3}\sen(3t)$
+	
+	Ahora, usamos el dato $\displaystyle y\left(\frac{\pi}{2}\right)=-1$
+	
+	$\displaystyle -1=\frac{1}{5}\cos\left(2 \cdot \frac{\pi}{2}\right)+\frac{4}{5}\cos\left(3 \cdot \frac{\pi}{2}\right)+\frac{k}{3}\sen\left(3 \cdot \frac{\pi}{2}\right)$
+	
+	$\displaystyle -1=-\frac{1}{5}+0-\frac{k}{3} \rightarrow \boxed{k=\frac{12}{5}}$
+	
+	Por último: \fcolorbox{black}{yellow}{$\displaystyle y(t)=\frac{1}{5}\cos(2t)+\frac{4}{5}\cos(3t)+\frac{4}{5}\sen(3t)$}
+	
+	\subsection{Ejercicio 9}
+	Resuelva los siguientes Sistemas de Ecuaciones Diferenciales por medio de la Transformada de Laplace:
+	\subsubsection{9d}
+	$\begin{cases}
+		x'(t) + 2y'(t)+5x(t)= & 0  \\
+		y'(t) +y(t)+2x(t)= & 0
+	\end{cases}$ $\;\;\;\;\mathrm{con} \; y(0)=1 \wedge x(0)=0$
+
+	Para resolver estos ejercicios, se procede casi de la misma manera que para las ecuaciones diferenciales del ejercicio 8. Primero, transformamos ambas ecuaciones:
+	
+	$\begin{cases}
+		sX(s)-x(0)+2sY(s)-2y(0)+5X(s)=0 \\
+		sY(s)-y(0)+Y(s)+2X(s)=0
+	\end{cases}$
+
+	$\begin{cases}
+		sX(s)+2sY(s)-2+5X(s)=0 \\
+		sY(s)-1+Y(s)+2X(s)=0
+	\end{cases}$
+
+	Ordenamos el sistema: \\
+	$\begin{cases}
+		(s+5)X(s)+2sY(s)=2 \\
+		2X(s)+(s+1)Y(s)=1
+	\end{cases}$
+
+	Ahora, para resolver el sistema, podemos usar la regla de Cramer. Hallemos los determinantes:
+	
+	$\Delta = \begin{vmatrix}
+		s+5 & 2s \\
+		2 & s+1
+	\end{vmatrix} = (s+5)\cdot(s+1)-2s\cdot 2=s^2+2s+5=(s+1)^2+4$
+
+	$\Delta X(s) = \begin{vmatrix}
+		2 & 2s \\
+		1 & s+1
+	\end{vmatrix}= 2(s+1)-2s = 2$
+
+	$\Delta Y(s) = \begin{vmatrix}
+		s+5 & 2 \\
+		2 & 1
+	\end{vmatrix}=s+5-4=s+1$
+
+	Luego, $\displaystyle X(s)=\frac{\Delta X(s)}{\Delta}$ y $\displaystyle Y(s)=\frac{\Delta Y(s)}{\Delta}$
+	
+	Entonces, si expresamos según la regla:
+	
+	$\displaystyle X(s)=\frac{2}{(s+1)^2+4}$
+	
+	$\displaystyle Y(s)=\frac{s+1}{(s+1)^2+4}$
+	
+	Por último, se antitransforman estas expresiones, y se llega a la solución:
+	
+	\fcolorbox{black}{yellow}{$x(t)=\sen(2t)e^{-t} \;\;;\;\; y(t)=\cos(2t)e^{-t}$}
+	
 	\section{Parte 4: Convolución}
+	\subsection{Ejercicio 10}
+	Halle $\displaystyle \lapl{\int_{0}^{t}u\cos(u)e^{t-u}du}$ utilizando el Teorema de Convolución.
+	
+	Recordemos el Teorema de Convolución:
+	
+	Si $\displaystyle f(t)=\ilapl{F(s)} \wedge g(t)=\ilapl{G(s)} \implies \ilapl{F(s) \bullet G(s)}=\int_{0}^{t}f(u)g(t-u)du$
+	
+	O bien, podemos verlo al revés: $\displaystyle \lapl{\int_{0}^{t}f(u)g(t-u)du}=F(s) \bullet G(s)$
+	
+	Esta última es la que tenemos que usar:
+	
+	Usamos: $f(t)=tcos(t)$ y $g(t)=e^{t}$
+	
+	Calculamos las transformadas: $\displaystyle \lapl{f(u)}=(-1)\left(\frac{s}{s^2+1}\right)'=(-1)\frac{s^2+1-2s^2}{(s^2+1)^2}= \dots$\\
+	$\displaystyle \dots = \frac{s^2-1}{(s^2+1)^2} \implies F(s)=\frac{(s+1)(s-1)}{(s^2+1)^2}$
+	
+	$\displaystyle \lapl{g(t)}=\frac{1}{s-1}$
+	
+	Ahora, usando la definición del Teorema de Convolución: $\displaystyle F(s) \bullet G(s) = \frac{(s+1)(s-1)}{(s^2+1)^2}\cdot \frac{1}{s-1}$
+	
+	Quedando: \fcolorbox{black}{yellow}{$\displaystyle F(s)\bullet G(s)=\frac{s+1}{(s^2+1)^2}$}
+	
+	\subsection{Ejercicio 11}
+	Antitransforme utilizando Convolución:
+	\subsubsection{11b}
+	$\displaystyle Y(s)=\frac{1}{(s^2+1)^2}$
+	
+	Para este ejercicio, debemos aplicar el teorema al revés de como lo aplicamos en el ejercicio 10. Hay que dividir a la función en otras dos, para que podamos usar el teorema:
+	
+	$\displaystyle F(s)=\frac{1}{s^2+1}$ y $\displaystyle G(s)=\frac{1}{s^2+1}$
+	
+	Ahora, aplicamos la definición:\\
+	$\displaystyle \ilapl{F(s)\bullet G(s)}= \int_{0}^{t}\sen(u)\sen(t-u)du$
+	
+	Usamos la identidad trigonométrica: $\displaystyle \sen(x)\sen(y)=\frac{\cos(x-y)-\cos(x+y)}{2}$
+	
+	$\displaystyle \ilapl{F(s)\bullet G(s)}= \frac{1}{2} \int_{0}^{t}(\cos(u-t+u)-\cos(u+t-u))du=\frac{1}{2}\int_{0}^{t}(\cos(2u-t)-\cos(t))du = \dots$
+	
+	$\displaystyle \dots = \frac{1}{2} \left[\frac{\sen(2u-t)}{2}-u\cos(t)\right]_{0}^{t}=\frac{1}{2}\left[\frac{\sen(t)}{2}-\frac{\sen(-t)}{2}-t\cos(t)\right]$
+	
+	Operando, llegamos a:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle \ilapl{F(s)\bullet G(s)}=\frac{1}{2}\sen(t)-\frac{1}{2}t\cos(t)$}
+	
+	\subsection{Ejercicios 12bdef}
+	Resuelva las siguientes ecuaciones integrales e integrodiferenciales por medio de la Transformada de Laplace, utilizando el Teorema de Convolución
+	\subsubsection{12b}
+	$\displaystyle y(t)=t+2\int_{0}^{t}\cos(t-u)y(u)du$
+	
+	Para esta serie de ejercicios, vamos a usar el Teorema de Convolución de la forma que lo usamos en el ejercicio 10.
+	
+	Se procede de la misma manera que para la resolución de ecuaciones diferenciales. Primero se transforma, se agrupa en $Y(s)$, luego, se trabaja la expresión en el dominio de Laplace, y luego antitransformamos para obtener la solución temporal.
+	
+	Transformamos:
+	
+	$\displaystyle Y(s)=\frac{1}{s^2}+ \frac{2s}{s^2+1}\cdot Y(s)$
+	
+	Intentamos agrupar para $Y(s)$
+	
+	$\displaystyle Y(s)-\frac{2s}{s^2+1}Y(s)=\frac{1}{s^2} \rightarrow Y(s)\left(1-\frac{2s}{s^2+1}\right)=\frac{1}{s^2} \rightarrow Y(s)\left(\frac{s^2-2s+1}{s^2+1}\right)=\frac{1}{s^2}$
+	
+	$\displaystyle Y(s)=\frac{s^2+1}{s^2(s^2-2s+1)}=\frac{s^2+1}{s^2(s-1)^2}$
+	
+	Toca el turno de aplicar fracciones simples:
+	
+	$\displaystyle \frac{s^2+1}{s^2(s-1)^2}=\frac{\cancelto{1}{A}}{s^2}+\frac{B}{s}+\frac{\cancelto{2}{C}}{(s-1)^2}+\frac{D}{s-1}$
+	
+	$s^2+1=(s-1)^2+Bs(s-1)^2+2s^2+D(s-1)s^2$\\
+	$s^2+1=s^2-2s+1+Bs^3-2Bs^2+Bs+2s^2+Ds^3-Ds^2$
+	
+	$0=B+D \; \circled{1}$\\
+	$1=1-2B+2-D \; \circled{2}$\\
+	$0=-2+B \; \circled{3}$\\
+	$1=1 \rightarrow \mathrm{Verifica}$
+	
+	De \circled{3}: $B=2$\\
+	En \circled{1}: $D=-2$
+	
+	$B$ y $D$ en \circled{2}: $1=1-2\cdot 2 + 2 - (-2) \rightarrow 1=1 \rightarrow \mathrm{Verifica}$
+	
+	Queda entonces nuestra $Y(s)$:
+	
+	$\displaystyle Y(s)=\frac{1}{s^2}+\frac{2}{s}+\frac{2}{(s-1)^2}+\frac{-2}{s-1}$
+	
+	Antitransformando:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle y(t)=t+2+2te^t-2e^t$}
+	
+	\subsubsection{12d}
+	$\displaystyle y(t)=\int_{0}^{t}y(u)du+\cos(t)$
+	
+	Para este ejercicio, es muy común equivocarse e intentar aplicar el Teorema de Convolución sobre el primer término del segundo miembro. Sin embargo, esa integral puede resolverse fácilmente usando la propiedad de la ``Transformada de Laplace de las Integrales''. Recordémosla:
+	
+	Si $\displaystyle F(s)=\lapl{f(t)} \implies \lapl{\int_{0}^{t}f(u)du}=\frac{F(s)}{s}$
+	
+	Teniendo en cuenta esto, transformamos:
+	
+	$\displaystyle Y(s)=\frac{Y(s)}{s}+\frac{s}{s^2+1} \rightarrow Y(s)-\frac{Y(s)}{s}=\frac{s}{s^2+1}$
+	
+	Agrupamos en $Y(s)$:
+	
+	$\displaystyle Y(s)\left(1- \frac{1}{s} \right)=\frac{s}{s^2+1} \rightarrow Y(s)\left(\frac{s-1}{s}\right)=\frac{s}{s^2+1} \rightarrow Y(s)=\frac{s^2}{(s^2+1)(s-1)}$
+	
+	Aplicamos fracciones simples:
+	
+	$\displaystyle \frac{s^2}{(s^2+1)(s-1)}=\frac{As+B}{s^2+1}+\frac{\cancelto{\frac{1}{2}}{C}}{s-1}$
+	
+	$\displaystyle s^2=(As+B)(s-1)+\frac{1}{2}(s^2+1)$\\
+	$\displaystyle s^2=As^2-As+Bs-B+\frac{1}{2}s^2+\frac{1}{2}$
+	
+	$\displaystyle 1=A+\frac{1}{2} \; \circled{1}$\\
+	$\displaystyle 0=-A+B \; \circled{2}$\\
+	$\displaystyle 0=-B+\frac{1}{2} \; \circled{3}$
+	
+	De \circled{2}: $A=B$\\
+	De \circled{3}: $B=\frac{1}{2} \rightarrow A=\frac{1}{2} \;\; \text{(verifica también en } \circled{1} \mathrm{)}$
+	
+	Nuestra $Y(s)$ queda:
+	
+	$\displaystyle Y(s)=\frac{\frac{1}{2}s+\frac{1}{2}}{s^2+1}+\frac{\frac{1}{2}}{s-1}=\frac{\frac{1}{2}s}{s^2+1}+\frac{\frac{1}{2}}{s^2+1}+\frac{\frac{1}{2}}{s-1}$
+	
+	Antitransformamos:
+	
+	\fcolorbox{black}{yellow}{$\displaystyle y(t)=\frac{1}{2}\cos(t)+\frac{1}{2}\sen(t)+\frac{1}{2}e^t$}
+	
+	\subsubsection{12e}
+	$\displaystyle \int_{0}^{t}y(u)(t-u)du+y'(t)=\frac{t^4}{12}+t+1 \;\;\;\;\; \text{con }y(0)=-1$
+	
+	Transformamos:
+	
+	$\displaystyle Y(s)\cdot \frac{1}{s^2}+sY(s)-\cancelto{-1}{y(0)}=\;\;\frac{1}{\cancel{12}} \cdot \frac{\cancelto{2}{24}}{s^5} + \frac{1}{s^2} + \frac{1}{s}$
+	
+	$\displaystyle Y(s)\left(\frac{1}{s^2}+s\right)=\frac{2}{s^5}+\frac{1}{s^2}+\frac{1}{s}-1$
+	
+	$\displaystyle Y(s)\left(\frac{s^3+1}{\cancel{s^{2}}}\right)=\frac{2+s^3+s^4-s^5}{s^{\cancelto{3}{5}}} \rightarrow Y(s)=\frac{2+s^3+s^4-s^5}{s^3(s^3+1)}=\frac{2+s^3+s^4-s^5}{s^3(s+1)(s^2-s+1)}$
+	
+	Ahora, tocaría aplicar fracciones simples:
+	
+	$\displaystyle \frac{2+s^3+s^4-s^5}{s^3(s^3+1)}=\frac{A}{s^3}+\frac{B}{s^2}+\frac{C}{s}+\frac{D}{s+1}+\frac{Es+F}{s^2-s+1}$
+	
+	Calcular estas fracciones simples sería algo MUY tedioso, tenemos 6 incógnitas, de las cuales podemos calcular directamente solo 2, las otras habría que calcularlas haciendo el sistema de ecuaciones.
+	
+	Para evitar tanto cuenterío, vamos a usar algún artilugio matemático. Vamos a sumar y restar $s^3$ en el numerador:
+	
+	$\displaystyle Y(s)=\frac{2+s^3+s^3-s^3+s^4-s^5}{s^3(s^3+1)}$
+	
+	Agrupamos convenientemente: $\displaystyle Y(s)=\frac{2+2s^3-s^3+s^4-s^5}{s^3(s^3+1)}$
+	
+	Distribuimos convenientemente: $\displaystyle Y(s)=\frac{2+2s^3}{s^3(s^3+1)}+\frac{-s^3+s^4-s^5}{s^3(s^3+1)}$
+	
+	Sacamos factor común $2$ en el primer término y $-s^3$ en el segundo:\\$\displaystyle Y(s)=\frac{2(1+s^3)}{s^3(s^3+1)}+\frac{-s^3(1-s+s^2)}{s^3(s^3+1)}$
+	
+	En el segundo miembro, volvemos a factorizar:\\
+	$\displaystyle Y(s)=\frac{2\cancel{(1+s^3)}}{s^3\cancel{(s^3+1)}}+\frac{-\cancel{s^3}\cancel{(1-s+s^2)}}{\cancel{s^3}(s+1)\cancel{(s^2-s+1)}}=\frac{2}{s^3}-\frac{1}{s+1}$
+	
+	Nos quedó una expresión mucho más sencilla, que es muy fácil de antitransformar:
+	
+	\fcolorbox{black}{yellow}{$y(t)=t^2-e^{-t}$}
+	
+	\subsubsection{12f}
+	$\displaystyle y'(t)=1-\int_{0}^{t}y(u)e^{2(t-u)}du \;\;\;\;\; \mathrm{con}\; y(0)=1$
+	
+	Este ejercicio tiene todo combinado, es una ecuación integrodiferencial tipo convolutorio. Transformemos:
+	
+	$\displaystyle sY(s)-\cancelto{1}{y(0)}=\frac{1}{s} - Y(s) \frac{1}{s-2}$
+	
+	$\displaystyle sY(s)+Y(s) \frac{1}{s-2}=\frac{1}{s} + 1 \rightarrow Y(s)\left(s + \frac{1}{s-2}\right)=\frac{s+1}{s} \rightarrow Y(s)\left(\frac{s^2-2s+1}{s-2}\right) =\frac{s+1}{s}$
+	
+	$\displaystyle Y(s)=\frac{(s+1)(s-2)}{s(s-1)^2}=\frac{s^2-s-2}{s(s-1)^2}$
+	
+	Aplicamos fracciones simples:
+	
+	$\displaystyle \frac{s^2-s-2}{s(s-1)^2}=\frac{\cancelto{-2}{A}}{s}+\frac{\cancelto{-2}{B}}{(s-1)^2}+\frac{C}{s-1}$
+	
+	$\displaystyle s^2-s-2=-2(s-1)^2-2s+C(s-1)s$\\
+	$\displaystyle s^2-s-2=-2s^2+4s-2-2s+Cs^2-Cs$
+	
+	$\displaystyle 1=-2+C \rightarrow C=3$\\
+	$-1=4-2-C \rightarrow \text{Verifica con } C=3$\\
+	$-2=-2$
+	
+	Queda $\displaystyle Y(s)=\frac{-2}{s}+\frac{-2}{(s-1)^2}+\frac{3}{s-1}$
+	
+	Antitransformando, nos queda: \fcolorbox{black}{yellow}{$\displaystyle y(t)=-2-2te^t+3e^t$}
+	
 	\section{Parte 5: Evaluación de integrales}
-	\section{Ejercicios bonus}
-	\section{Ejercicios para curiosos}
+	\subsection{Ejercicios 13bd}
+	Calcule el valor de las siguientes integrales utilizando Transformada de Laplace:
+	
+	\subsubsection{13b}
+	$\displaystyle \int_{0}^{\infty}e^{-3t}t\sen(t)dt$
+	
+	Para esta última parte, hay que realizar una serie de pasos:
+	\begin{itemize}
+		\item Buscar el valor $a=?$, que multiplica al exponente de la exponencial.
+		\item Transformar nuestra $f(t)$, para obtener una $F(s)$
+		\item Calcular $F(a)$
+	\end{itemize}
+
+	Arranquemos, entonces, con el primer paso. El valor $a$, es el exponente de la función exponencial que tengamos dentro de la integral. En este caso $a=3$ (no hay que considerar el signo menos).
+	
+	La $f(t)$ es todo aquello que esté dentro la integral, sin considerar ni la exponencial ni el diferencial.
+	
+	Entonces: $f(t)=t\sen(t)$
+	
+	Transformamos: $\displaystyle \lapl{f(t)}=\lapl{t\sen(t)} \rightarrow F(s)=(-1)\left(\frac{1}{s^2+1}\right)'$
+	
+	$\displaystyle F(s)=-\frac{-2s}{(s^2+1)^2}\rightarrow F(s)=\frac{2s}{(s^2+1)^2}$
+	
+	El ultimo paso es hacer $F(a)$:
+	
+	$\displaystyle F(3)=\frac{2\cdot3}{(3^2+1)^2} \rightarrow $ \fcolorbox{black}{yellow}{$\displaystyle F(3)=\frac{3}{50}$}
+	
+	\subsubsection{13d}	
+	$\displaystyle \int_{0}^{\infty}\frac{e^{-3t}-e^{-6t}}{t}dt$
+	
+	Para terminar los ejercicios de Laplace, vamos a recurrir a un clásico de parciales y finales.
+	
+	En este caso, muchos intentan distribuir la t, y luego aplicar la propiedad de división por t. Sin embargo, esto no es posible ya que no se cumplen las condiciones. Recordemos la propiedad de división por t:
+	
+	Si $\displaystyle F(s)=\lapl{f(t)} \implies \lapl{\frac{f(t)}{t}}=\int_{s}^{\infty}F(u)du$
+	
+	Esta es válida \textbf{SIEMPRE QUE } $\displaystyle \exists \lim\limits_{t\rightarrow0}\frac{f(t)}{t}$\\
+	Y en el caso de distribuir la $t$, nos quedaría que esa integral diverge.
+	
+	Por lo tanto, hay que buscar alguna alternativa. Si sacamos factor común $e^{-3t}$ nos queda:
+	
+	$\displaystyle \int_{0}^{\infty}e^{-3t}\frac{(1-e^{-3t})}{t}dt$
+	
+	Siendo $\displaystyle a=3 \wedge f(t)=\frac{1-e^{-3t}}{t}$, y si calculamos la condición para que se cumpla la propiedad de división por t, vamos a notar que ese límite vale 3 (te toca a vos verificarlo).
+	
+	Entonces, teniendo certeza de que se cumple la propiedad, vamos a calcular la Transformada de Laplace de $g$:
+	
+	$\displaystyle \lapl{g(t)}=G(s)=\frac{1}{s}-\frac{1}{s+3} \implies \lapl{\frac{g(t)}{t}}=\int_{s}^{\infty}G(u)du$
+	
+	Es decir, nos toca volver un segundo a análisis 1 y calcular esta integral impropia:
+	
+	$\displaystyle F(s)=\int_{s}^{\infty} \frac{1}{u}-\frac{1}{u+3}=\left[\ln(u)-\ln(u+3)\right]_{s}^{\infty}=\left[\ln\left(\frac{u}{u+3}\right)\right]_{s}^{\infty}$
+	
+	Resolviendo la integral impropia:\\
+	$\displaystyle F(s)=\lim\limits_{u\rightarrow \infty}\ln\left(\frac{u}{u+3}\right)-\ln\left(\frac{s}{s+3}\right)=\lim\limits_{u\rightarrow \infty} \ln\left(\frac{\cancelto{1}{\frac{u}{u}}}{\cancelto{1}{\frac{u}{u}}+\cancelto{0}{\frac{3}{u}}}\right) - \ln\left(\frac{s}{s+3}\right)$
+	
+	$\displaystyle F(s)=\ln(1)-\ln\left(\frac{s}{s+3}\right)=\ln\left(\frac{s+3}{s}\right)$
+	
+	Por úuuuuuultimo, hacemos: \fcolorbox{black}{yellow}{$\displaystyle F(3)=\ln\left(\frac{3+3}{3}\right)=\ln(2)$}
+	
+	
 \end{document}
