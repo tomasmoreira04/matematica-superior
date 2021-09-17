@@ -490,7 +490,25 @@
 	\subsubsection{6j}
 	$\displaystyle F(s)=\frac{(4s+2)e^{-2s}}{(s-1)(s+2)}$
 	
-	**Próximamente**
+	Este ejercicio tiene de distinto que tenemos una ¿¿exponencial?? ¿¿¿en el dominio de Laplace???
+	
+	¿Hay algo que está mal? No! Simplemente es una función que en el dominio del tiempo estaba desplazada, y se le tuvo que aplicar la segunda propiedad de la traslación.
+	
+	Para resolverlo, hay que obviar a la exponencial, por ahora, y calcular fracciones simples sobre lo demás:
+	
+	$\displaystyle \frac{4s+2}{(s-1)(s+2)}=\frac{\cancelto{2}{A}}{s-1}+\frac{\cancelto{2}{B}}{s+2}$
+	
+	Una vez que calculamos las fracciones simples, vamos a devolver la exponencial a los dos términos:
+	
+	$\displaystyle F(s)=\frac{2e^{-2s}}{s-1}+\frac{2e^{-2s}}{s+2}$
+	
+	Para antitransformar esto lo que hacemos es, otra vez, ignorar a la exponencial, antitransformar como si no estuviera, y luego aplicamos la segunda propiedad de la traslación:
+	
+	$\ilapl{F_{1}(s)}=f_{1}(t)=2e^t+2e^{-2t}$
+	
+	Ahora, aplicamos la traslación, considerando que esta se hace en $t$:
+	
+	\fcolorbox{black}{yellow}{$f(t)=2e^{t-2}+2e^{-2(t-2)}$}
 	
 	\section{Parte 3: Resolución de ecuaciones diferenciales}
 	\subsection{Ejercicios 8egi}
@@ -911,7 +929,7 @@
 	
 	Es decir, nos toca volver un segundo a análisis 1 y calcular esta integral impropia:
 	
-	$\displaystyle F(s)=\int_{s}^{\infty} \frac{1}{u}-\frac{1}{u+3}=\left[\ln(u)-\ln(u+3)\right]_{s}^{\infty}=\left[\ln\left(\frac{u}{u+3}\right)\right]_{s}^{\infty}$
+	$\displaystyle F(s)=\int_{s}^{\infty}\left( \frac{1}{u}-\frac{1}{u+3} \right)du = \left[\ln(u)-\ln(u+3)\right]_{s}^{\infty}=\left[\ln\left(\frac{u}{u+3}\right)\right]_{s}^{\infty}$
 	
 	Resolviendo la integral impropia:\\
 	$\displaystyle F(s)=\lim\limits_{u\rightarrow \infty}\ln\left(\frac{u}{u+3}\right)-\ln\left(\frac{s}{s+3}\right)=\lim\limits_{u\rightarrow \infty} \ln\left(\frac{\cancelto{1}{\frac{u}{u}}}{\cancelto{1}{\frac{u}{u}}+\cancelto{0}{\frac{3}{u}}}\right) - \ln\left(\frac{s}{s+3}\right)$
