@@ -1,0 +1,547 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in, headheight=14.5pt]{geometry}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage[none]{hyphenat}
+\usepackage{fancyhdr}
+\usepackage[spanish, es-noshorthands]{babel}
+\usepackage[spanish, calc]{datetime2}
+\usepackage{fmtcount}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[nottoc, notlot, notlof]{tocbibind}
+\usepackage{tocloft}
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{cancel}
+\usepackage{textcomp}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc}
+\usepackage{polynom}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+\pgfplotsset{compat=1.15}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+
+\newcommand{\dropsign}[1]{\smash{\llap{\raisebox{-.5\normalbaselineskip}{$#1$\hspace{2\arraycolsep}}}}}%
+
+
+\parindent 0ex
+
+\pgfplotsset{width=10cm,compat=1.9}
+
+\def\imj{\mathrm{j}}
+\def\sen{\mathrm{sen}}
+
+\newcommand{\lapl}[1]{\mathscr{L} \left\lbrace {#1} \right\rbrace}
+\newcommand{\ilapl}[1]{\mathscr{L}^{-1} \left\lbrace {#1} \right\rbrace}
+
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+\renewcommand{\baselinestretch}{1.1}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+	
+\newcommand{\highlight}[2]{\colorbox{#1}{$\displaystyle #2$}}
+
+\graphicspath{{\ProjectRoot/commons/img/}}
+
+\newcommand*{\ProjectRoot}{../../matematica-superior}
+
+
+\begin{document}
+		
+	\begin{titlepage}
+		\begin{center}
+			\vspace*{0.5cm}
+			\Large{\textbf{Universidad Tecnológica Nacional}}\\
+			\Large{\textbf{Facultad Regional Buenos Aires}}\\
+			\begin{center}
+				\includegraphics[scale=0.4]{logoutn.png}
+			\end{center}
+			\vfill
+			\line(1,0){400}\\
+			\vspace*{0.3cm}
+			\huge{\textbf{Matemática Superior}}\\
+			\Large{\textbf{Unidad 7: Sistemas de ecuaciones lineales}}\\
+			\large{Ejercicios resueltos}
+			\line(1,0){400}\\
+			\vfill
+			Tomás Moreira \\
+			
+			\DTMnewdatestyle{mydate}{%
+				\renewcommand{\DTMdisplaydate}[4]{%
+					\DTMMonthname{##2} \number##1
+				}
+				\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}
+			}
+			
+			\DTMsetdatestyle{mydate}
+			\today
+				
+				
+		\end{center}
+	\end{titlepage}
+
+	\tableofcontents
+	\thispagestyle{empty}
+	\clearpage
+
+	\setcounter{page}{1}
+	
+	\section{Ejercicio 1 (tipos de matrices)}
+	Dadas las siguientes matrices: $\;\;\;$
+	$A=\begin{bmatrix}
+		-2 & 1 \\
+		1 & -3
+	\end{bmatrix} \;\;\;
+	B=\begin{bmatrix}
+		7 & 2 & 0 \\
+		3 & 5 & -1 \\
+		0 & 5 & -6 \\
+	\end{bmatrix} \;\;\;
+	C=\begin{bmatrix}
+		2 & -1 & 0 \\
+		-1 & 4 & 2 \\
+		0 & 2 & 2 \\
+	\end{bmatrix}
+	$
+	
+	Analice si cada una de ellas es:
+	\begin{enumerate}[label=\alph*)]
+		\item Simétrica
+		\item Singular
+		\item Dominante diagonalmente (especifique si lo es en sentido estricto)
+	\end{enumerate}
+
+	Arrancamos con esta unidad, primero recorreremos ejercicios que son más "básicos" de matrices, y luego nos metemos de lleno con los métodos iterativos.
+	
+	Comencemos para la matriz $A$:
+	
+	\textbf{Para el inciso a}, de Álgebra, recordemos que una matriz es simétrica si $A=A^t$.\\
+	Trasponemos la matriz, quedando: $A^t=\begin{bmatrix}
+		-2 & 1 \\
+		1 & -3
+	\end{bmatrix}$, como $A=A^t$, la matriz \fcolorbox{black}{yellow}{es simétrica}.
+
+	\textbf{Para el inciso b}: una matriz es singular si su determinante es igual a 0.
+	
+	$det(A)=\begin{vmatrix}
+		-2 & 1 \\
+		1 & -3
+	\end{vmatrix}=(-2)\cdot(-3)-1\cdot1=5\ne0$, por ende, \fcolorbox{black}{yellow}{no es singular}.
+
+	\textbf{Para el inciso c}, hay que recordar la definición de matriz diagonal dominante:\\
+	Una matriz es diagonal dominante si: $\displaystyle |a_{ii}|\ge \sum_{j=1, i\ne j}^{n} |a_{ij}| \; \forall i=1\dots n$
+	
+	Y la matriz será estricamente diagonal dominante si $\displaystyle |a_{ii}| > \sum_{j=1, i\ne j}^{n} |a_{ij}| \; \forall i=1\dots n$, es decir no se considera la igualdad, sino que es mayor estricto.
+	
+	Dicho en criollo, nos está queriendo decir que el valor absoluto de un elemento de la diagonal principal debe ser mayor o igual a la suma de los valores absolutos de los elementos de la misma fila, y esto debe ocurrir en todas las filas.
+	
+	Para nuestro caso: $\begin{bmatrix}
+		-2 & 1 \\
+		1 & -3
+	\end{bmatrix}$$\begin{matrix}
+	\rightarrow |-2| \ge |1| \\
+	\rightarrow |-3| \ge |1|
+\end{matrix}$
+
+	Como resultan mayores todos los elementos de la diagonal, \fcolorbox{black}{yellow}{es diagonalmente dominante} y, además, lo es en \fcolorbox{black}{yellow}{forma estricta}.\\
+	
+	Ahora, comencemos con la matriz $B=\begin{bmatrix}
+		7 & 2 & 0 \\
+		3 & 5 & -1 \\
+		0 & 5 & -6 \\
+	\end{bmatrix}$.
+	
+	Inciso a:
+	
+	$B^t=\begin{bmatrix}
+		7 & 3 & 0 \\
+		2 & 5 & 5 \\
+		0 & -1 & -6 \\
+	\end{bmatrix} \;\;\;$, como $B\ne B^t$ la matriz \fcolorbox{black}{yellow}{no es simétrica}.
+
+	Inciso b:
+	
+	$det(B)=\begin{vmatrix}
+		7 & 2 & 0 \\
+		3 & 5 & -1 \\
+		0 & 5 & -6 \\
+	\end{vmatrix} = [7 \cdot 5 \cdot (-6) + 2 \cdot (-1) \cdot 0 + 3 \cdot 5 \cdot 0] - [0 \cdot 5 \cdot 0 + 5 \cdot (-1) \cdot 7 + 3 \cdot 2 \cdot (-6)]$\\
+	$= -210 + 71 = -139 \ne 0 \rightarrow $ no es singular.
+	
+	Inciso c:$
+	\begin{bmatrix}
+		7 & 2 & 0 \\
+		3 & 5 & -1 \\
+		0 & 5 & -6 \\
+	\end{bmatrix}$
+	$\begin{matrix}
+	\rightarrow |7| \ge |2| + |0|\\
+	\rightarrow |5| \ge |3| + |-1| \\
+	\rightarrow |-6| \ge |5| + |0| \\
+	\end{matrix}$
+
+	Las desigualdades son todas ciertas, por ende, la matriz \fcolorbox{black}{yellow}{es diagonal dominante}, y lo es en \fcolorbox{black}{yellow}{forma estricta}.\\
+	
+	Por último, veamos la matriz $C=\begin{bmatrix}
+		2 & -1 & 0 \\
+		-1 & 4 & 2 \\
+		0 & 2 & 2 \\
+	\end{bmatrix}$
+
+	Inciso a:
+	
+	$C^t=\begin{bmatrix}
+		2 & -1 & 0 \\
+		-1 & 4 & 2 \\
+		0 & 2 & 2 \\
+	\end{bmatrix}$, como $C=C^t$, la matriz es simétrica.
+
+	Inciso b: $|C|=16-10=6$, por ende no es singular,
+	
+	Inciso c:
+	
+	$\begin{bmatrix}
+		2 & -1 & 0 \\
+		-1 & 4 & 2 \\
+		0 & 2 & 2 \\
+		\end{bmatrix}$$
+	\begin{matrix}
+		\rightarrow |2| \ge |-1| + |0| \\
+		\rightarrow |4| \ge |-1| + |2| \\
+		\rightarrow |2| \ge |0| + |2| \\
+		\end{matrix}
+	$
+	
+	Como vemos la matriz es diagonal dominante, aunque en este caso no lo es en sentido estricto, debido a que en la tercer fila la suma es igual al valor absoluto del elemento de la diagonal principal.
+	
+	\section{Ejercicio 2 (radio espectral)}
+	Dadas las siguientes matrices: $A=\begin{bmatrix}
+		2 & -1\\
+		-1 & 2
+	\end{bmatrix} \;\;\; B=\begin{bmatrix}
+	2 & 1 & 0 \\
+	1 & 2 & 0 \\
+	0 & 0 & -5 \\
+\end{bmatrix}$
+
+	Calcule:
+	\begin{enumerate}[label=\alph*)]
+		\item Los autovalores
+		\item El radio espectral
+		\item Las normas $\lVert A \rVert_{2}$ y $\lVert B \rVert_{2}$
+	\end{enumerate}
+
+	Empecemos con la matríz $A=\begin{bmatrix}
+		2 & -1\\
+		-1 & 2
+	\end{bmatrix}$
+
+	\textbf{Para el inciso a}, debemos hacer $|A-\lambda I|=0$, es decir:
+	
+	$|A-\lambda I|=\begin{vmatrix}
+		2 - \lambda & -1\\
+		-1 & 2 \lambda
+	\end{vmatrix} = (2-\lambda)(2-\lambda) - [(-1)(-1)]=4-2\lambda-2\lambda+\lambda^2-1=\boxed{\lambda^2-4\lambda+3}$
+	
+	Al resolver las raíces del polinomio característico, obtenemos los autovalores: \fcolorbox{black}{yellow}{$\lambda_1=3\;,\lambda_2=1$}
+	
+	\textbf{Para el inciso b}, por definición el radio espectral es $\rho(A)=|\text{máx} \lambda_i|$. En este caso es $\rho(A)=3$.
+	
+	Por último, \textbf{para el inciso c}, debemos recordar que la norma 2 de una matriz es: $\sqrt{\rho(A^t\cdot A)}$, entonces debemos calcular $A^t \cdot A$
+	
+	$A^t\cdot A = \begin{pmatrix}
+		2 & -1\\
+		-1 & 2
+	\end{pmatrix} \cdot \begin{pmatrix}
+	2 & -1\\
+	-1 & 2
+\end{pmatrix}=\begin{pmatrix}
+5 & -4\\
+-4 & 5
+\end{pmatrix}$
+
+	Ahora, habría que calcular el radio de espectral a esta última matriz:
+	$|(A^tA)-\lambda I|=\begin{vmatrix}
+		5 - \lambda & -4\\
+		-4 & 5-\lambda
+	\end{vmatrix}=(5-\lambda)(5-\lambda)-(-4)(-4)=\lambda^2-10\lambda+9=0$, las soluciones son: $\lambda_1=9 \;, \lambda_2=1$
+
+	El radio espectral es, en efecto, 9.
+	
+	Por último, $\lVert A \rVert_2=\sqrt{\rho(A^tA)}=\sqrt{9}=3$.
+	
+	-- mostrar el cálculo de autovalores con wolfram
+	
+	\section{Ejercicio 3 (normas)}
+	Dada la matriz $A=\begin{bmatrix}
+		5 & -5 & -7\\
+		-4 & 2 & -4 \\
+		-7 & -4 & 5
+	\end{bmatrix}$. Halle las normas $\lVert A \rVert_1$ y $\lVert A \rVert_\infty$
+
+	Este ejercicio es más sencillo que los anteriores, que requieren más cálculos.
+	
+	Tenemos que sumar las filas (en valor absoluto), para el caso de la norma infinito, y análogo pero con las columnas para la norma 1.
+	
+	$\begin{bmatrix}
+		5 & -5 & -7\\
+		-4 & 2 & -4 \\
+		-7 & -4 & 5
+	\end{bmatrix}$$\begin{matrix}
+	\rightarrow |5| + |-5| + |-7| = 17 \\
+	\rightarrow |-4| + |2| + |-4| = 10 \\
+	\rightarrow |-7| + |-4| + 5 = 16
+\end{matrix}$\\$
+\begin{matrix}
+	\;\;\;\downarrow & \downarrow & \downarrow\\
+	\;\;\;16 & 11 & 16\\
+\end{matrix}$
+		
+		Luego de hacer las sumas, el máximo de esos valores será la norma correspondiente. Para el caso de la norma infinito es $\lVert A \rVert_\infty=17$, y para la norma 1 es $\lVert A \rVert_1=16$.
+		
+		Una regla mnemotécnica es mirar la forma de los símbolos, el infinito es alargado, por ende, sumo los elementos de toda una fila; mientras que el uno está a lo alto, entonces sumo las columnas.
+		
+	\section{Ejercicio 4 (diagonal dominante)}
+	Dadas las matrices $A=\begin{pmatrix}
+	2k-3 & 4 & 1 \\
+	2 & 5 & 2 \\
+	2 & 4 & 10-k	
+	\end{pmatrix} \;\;$ y $B=\begin{pmatrix}
+	3k-3 & 4 & -1 \\
+	2 & 5+k^2 & -2 \\
+	7 & 4 & 10-k
+	\end{pmatrix}$
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Indique los valores de $k \in \mathbb{R}$ tal que sean diagonalmente dominantes.
+		\item ¿Para qué valores de $k \in \mathbb{R}$, son estricamente diagonal dominantes?
+	\end{enumerate}
+
+	Los incisos a y b son muy parecidos, solo va a variar un signo de los que vamos a usar. Empecemos para la matriz A:
+	
+	Sabemos que para ser diagonal dominante deben ser los módulos de los elementos de la diagonal principal mayores a la suma de los módulos de los valores de la misma fila, es decir, debemos plantear:
+	
+	$|2k-3| \ge 4 + 1 \;\;$ y $\;\;|10-k| \ge 2 + 4$
+	
+	$|2k-3| \ge 5$ 
+	
+	$2k-3 \ge 5 \;\; \lor \;\; 2k-3\le -5 $
+	
+	$\boxed{k \ge 4 \;\; \lor \;\; k \le -1}$
+	
+	$|10-k| \ge 6$
+	
+	$10-k \ge 6 \;\; \lor \;\; 10-k\le -6 $
+	
+	$\boxed{k \le 4 \;\; \lor \;\; k \ge 16}$
+	
+	Tenemos que hacer la intersección de estos dos conjuntos. Termina quedándonos:\\ \fcolorbox{black}{yellow}{$k \in (-\infty; -1] \cup \{4\} \cup [16; +\infty)$}
+	
+	Luego, para el \textbf{inciso b} lo que cambia es el signo de la desigualdad, que ya no cuenta con el igual, de modo que quedan:
+	
+	$\boxed{k > 4 \;\; \lor \;\; k < -1}$
+	
+	$\boxed{k < 4 \;\; \lor \;\; k > 16}$
+	
+	Al hacer la intersección, el 4 deja de ser solución y no incluimos los extremos como solución:\\
+	\fcolorbox{black}{yellow}{$k \in (-\infty; -1) \cup (16; +\infty)$}\\
+	
+	Vamos con la matriz $B=\begin{pmatrix}
+		3k-3 & 4 & -1 \\
+		2 & 5+k^2 & -2 \\
+		7 & 4 & 10-k
+	\end{pmatrix}$
+
+	Planteamos lo mismo que el anterior:
+	
+	$|3k-3| \ge 5$
+	
+	$3k-3 \ge 5 \;\; \lor \;\; 3k-3 \le -5$
+	
+	$\boxed{k \ge \frac{8}{3} \;\; \lor \;\; k \le -\frac{2}{3}}$
+	
+	$\boxed{|5+k^2|\ge 4 \rightarrow$ válida $\forall k}$
+	
+	$|10-k|\ge 11$
+	
+	$10-k \ge 11 \;\; \lor \;\; 10-k \le -11$
+	
+	$\boxed{k \le -1 \;\; \lor \;\; k\ge21}$
+	
+	Al hacer la intersección de los dos conjuntos: \fcolorbox{black}{yellow}{$k \in (-\infty; -1] \cup [21; +\infty)$}.
+	
+	Por último, para la estricta, solo hay que eliminar los extremos de la solución, quedando: \\ \fcolorbox{black}{yellow}{$k \in (-\infty; -1) \cup (21; +\infty)$}
+	
+	\section{Ejercicio 5 (método de Jacobi)}
+	Aplique el método iterativo de Jacobi para resolver el sistema:
+	$$\begin{cases}
+		7x_1-x_2+4x_3=8 \\
+		3x_1-8x_2+2x_3=-4 \\ 
+		4x_1+x_2-6x_3=3
+	\end{cases}$$
+
+	realizando los cálculos con tres decimales redondeados e iterando hasta que cumpla que:
+	$$\left\lVert x_{i}^{(r+1)}-x_{i}^{(r)} \right\rVert_\infty < 0.03$$
+	
+	Para los métodos iterativos lo que hay que hacer es despejar una variable en cada una de las ecuaciones. Es decir, que en la primera ecuación debemos despejar $x_1$, en la segunda $x_2$ y en la última $x_3$, de esta manera:
+	
+	$\displaystyle \begin{cases}
+		x_1^{(r+1)}=\hspace{0.8cm}+\frac{1}{7}x_2^{(r)}-\frac{4}{7}x_3^{(r)}+\frac{8}{7}\\
+		x_2^{(r+1)}=\frac{3}{8}x_1^{(r)} \hspace{1.1cm}+\frac{1}{4}x_3^{(r)}+\frac{1}{2}\\
+		x_3^{(r+1)}=\frac{2}{3}x_1^{(r)}+\frac{1}{6}x_2^{(r)} \hspace{1.1cm}-\frac{1}{2}
+	\end{cases}$
+
+	Teniendo estas ecuaciones, tenemos que ahora, usar un vector inicial e ir usándolo para calcular los valores. Por lo general, el vector inicial es el vector nulo, en este caso sería $x^{(0)}=(0;0;0)$
+	
+	Con esta info, vamos al excel.
+
+	Alerta spoiler: el método converge en 8 iteraciones con el error deseado
+	
+	\section{Ejercicio 6 (método de Gauss-Seidel + matrices T)}
+	Resuelva el sistema anterior usando el método de Gauss-Seidel. Halle las $T_J$ y $T_{GS}$
+	
+	En efecto, hay que proceder de la misma manera que en el ejercicio anterior, hay que despejar las variables en las ecuaciones correspondientes. Lo que cambian son las fórmulas iterativas, a decir:
+	
+	$\displaystyle \begin{cases}
+		x_1^{(r+1)}=\hspace{1.3cm}+\frac{1}{7}x_2^{(r)}-\frac{4}{7}x_3^{(r)}+\frac{8}{7}\\
+		x_2^{(r+1)}=\frac{3}{8}x_1^{(r+1)} \hspace{1.2cm}+\frac{1}{4}x_3^{(r)}+\frac{1}{2}\\
+		x_3^{(r+1)}=\frac{2}{3}x_1^{(r+1)}+\frac{1}{6}x_2^{(r+1)} \hspace{0.8cm}-\frac{1}{2}
+	\end{cases}$
+
+	Como vemos, tanto para $x_2$ como para $x_3$ lo que pasa es que se usan valores que ya estamos calculando, es decir, estamos acelerando el método.
+	
+	Veamos como impacta en la rapidez de la convergencia en el excel.
+	
+	-----
+	
+	Vemos que converge en la mitad de iteraciones. Y esto es una tendencia que no es casualidad, \textbf{por lo general, el método de Gauss-Seidel es un 50\% más rápido que el método de Jacobi}.
+	
+	Para el punto de hallar las matrices $T_J$ y $T_{GS}$, debemos recordar:
+	
+	Para un sistema definido como $A \bullet X = B$, con $A$ siendo la matriz de coeficientes y $B$ la matriz de términos independientes. Se puede descomponer a $A$ como $A=D-L-U$
+	
+	$T_J=D^{-1}\cdot (L+U)$, donde $D$ es la matriz diagonal de la matriz de coeficientes, y las matrices $L$ y $U$ son las matrices triangulares inferiores y superiores asociadas a esa misma matriz, cambiadas de signo, respectivamente.
+	
+	$T_{GS}=(D-L)^{-1}U$
+	
+	Estas matrices sirven mucho para calcular de forma iterativa los métodos si uno quiere programarlas en algún lenguaje, o bien hacerlo en un Excel. Recuerden que las fórmulas iterativas son:
+	
+	$x^{(k+1)}=T_J\cdot x^{(k)} + C_J$, con $C_J=(D^{-1}\cdot B)$, para el método de Jacobi
+	
+	$x^{(k+1)}=T_{GS} \cdot x^{(k)} + C_{GS}$, con $C_{GS}=(D-L)^{-1}\cdot B$, para el método de Gauss-Seidel
+	
+	\section{Ejercicio 7 (Gauss Seidel + DD)}
+	Sea el S.E.L.: $\begin{cases}
+		4x-y=1\\
+		x+3y=2
+	\end{cases}$
+	\begin{enumerate}[label=\alph*)]
+		\item Indique si los métodos iterativos convergen. Justifique.
+		\item Realice cinco iteraciones por el método de Gauss-Seidel con $F(4, 10, 34, 56)$ y redondeo simétrico partiendo de $X^{(0)}=(0;0)$.
+		\item Idem b) pero partiendo de $X^{(0)}=(9;5)$. Compare.
+	\end{enumerate}
+
+	En este ejercicio vamos a abordar un tema que hasta ahora en la práctica habíamos ignorado. ¿Los métodos de Gauss-Seidel y Jacobi..siempre convergen? La respuesta es que no. En la teoría se ven 3 criterios.
+	
+	\begin{itemize}
+		\item Una sucesión definida por $X^{(k)}=TX^{(k-1)} + C$, con $k\ge 1$ y $C\ne0$ converge a la solución única de este sistema SI Y SOLO SI (\textbf{condición necesaria y suficiente}) $\rho(T)<1$. También, convergen con cualquier vector inicial
+		\item Si $\lVert T \rVert<1$ entonces los métodos iterativos convergen (esto es una condición suficiente). Converge con cualquier vector inicial.
+	\end{itemize}
+
+	Sin embargo, estas condiciones pueden ser un tanto incómodas para calcular, por lo que este teorema es el que vamos a utilizar, generalmente:
+	
+	\textbf{Si $A$ es una matriz diagonalmente dominante para cualquier $X_0$ los métodos de Jacobi o Gauss Seidel dan sucesión ${X^{(k)}}_{k=0}^{\infty}$ que converge a la solución de $AX=B$}
+	
+	Vale la pena destacar que la anterior es una \textbf{\underline{condición suficiente}}.
+	
+	Con esto dicho, vamos a verificar que la matriz A de coeficientes del ejercicio sea diagonalmente dominante.
+	
+	$A=\begin{pmatrix}
+		4 & -1 \\
+		1 &3
+	\end{pmatrix}$$\begin{matrix}
+	\rightarrow 4 > 1 \\
+	\rightarrow 3 > 1
+\end{matrix}$
+
+	Vemos que la matriz es diagonal dominante, por lo tanto podemos asegurar que los métodos iterativos convergen \textbf{(inciso a)}.
+	
+	\textbf{Para el inciso b} debemos realizar los despejes:
+	
+	$\begin{cases}
+		x^{(k+1)}=\frac{1}{4}y^{(k)}+\frac{1}{4}\\
+		y^{(k+1)}=\frac{-1}{3}x^{(k+1)}+\frac{2}{3}
+	\end{cases}$
+
+	Con estos despejes vamos al Excel a hacer las 6 iteraciones.
+	
+	En cuanto al inciso c, la comparación que podemos hacer que ambos convergen, solo que el del ejercicio c tarda una iteración más.
+	
+	\section{Ejercicio 9c (intercambio + Gauss Seidel)}
+	Aplique el método iterativo de Gauss Seidel para encontrar una solución aproximada de los siguientes sistemas, iterando hasta que cumpla con $\left\lVert x_i^{(r+1)}-x_i^{(r)} \right \rVert_\infty < 10^{-3}$
+	
+	Por abuso de notación, reemplazo $x_1$ por $x$, $x_2$ por $y$ y $x_3$ por $z$.
+	
+	$\begin{cases}
+		x+6y+2z=15\\
+		x+y-6z=-3\\
+		6x+y+z=9
+	\end{cases}$
+
+	Si intentamos hacer la verificación de si la matriz de coeficientes es diagonal dominante nos vamos a encontrar con que no lo es. Ya en la primera fila nos encontramos que $1\ngeq6+2$.
+	
+	A no desesperarse! Si la matriz no es DD, podemos intentar que lo sea! ¿Cómo? ...\\
+	...\\
+	...\\
+	Intercambiando filas!!! (o columnas, aunque esto es menos común).
+	
+	Hagamos el siguiente intercambio: la primera pasa a ser la segunda, la segunda pasa a ser la tercera, y la última pasa a ser la primera.
+	
+	$
+	\begin{cases}
+		6x+y+z=9\\
+		x+6y+2z=15\\
+		x+y-6z=-3
+	\end{cases}
+	$
+	
+	Ahora la matríz de coeficientes es diagonalmente dominante! Ya que $\boxed{6>1+1}$, $\boxed{6>2+1}$ y $\boxed{6>1+1}$
+	
+	Realizamos el despeje y resolvemos:
+	
+	$\begin{cases}
+		x^{(k+1)}=\frac{9}{6}-\frac{1}{6}y^{(k)}-\frac{1}{6}z^{(k)}\\
+		y^{(k+1)}=\frac{15}{6}-\frac{1}{6}x^{(k+1)}-\frac{2}{6}z^{(k)}\\
+		z^{(k+1)}=\frac{3}{6}+\frac{1}{6}x^{(k+1)}+\frac{1}{6}x^{(k+1)}
+	\end{cases}$
+
+	\section{Ejercicio 12 (no DD)}
+	Sea el sistema $A\bullet X = B$ con $A=\begin{pmatrix}
+		5 & 7\\
+		13 & 20
+	\end{pmatrix}\;\;\;$ $B=\begin{pmatrix}
+	29\\
+	79
+\end{pmatrix}$
+
+	\begin{enumerate}[label=\alph*)]
+		\item Indique si la matriz es diagonal dominante. ¿Puede asegurarse que sea posible resolverlo por el método de Gauss Seidel?
+		\item Realice 100 iteraciones por Gauss Seidel partiendo de $X^{0}=\begin{pmatrix}
+			1\\4
+		\end{pmatrix}$. ¿Converge a la solución que es $(3;2)$?
+		\item Analice si el resultado anterior contradice al teorema.
+	\end{enumerate}
+
+	Bien, para el inciso a, podemos ver a simple vista que la matriz no es diagonal dominante. Y no solo eso, no hay manera de reordenarlo para que lo sea.
+	
+	Vamos a ver los resultados de las 100 iteraciones en el Excel.
+	
+	Vemos que de todas maneras converge, a pesar de que la matriz no es diagonal dominante. Esto ocurre (damos respuesta al inciso c) porque el teorema es condición suficiente, no necesaria; por ende aunque no sea DD puede igual converger.
+\end{document}
+ 
