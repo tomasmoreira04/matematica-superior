@@ -1,0 +1,395 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in, headheight=14.5pt]{geometry}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage[none]{hyphenat}
+\usepackage{fancyhdr}
+\usepackage[spanish, es-noshorthands]{babel}
+\usepackage[spanish, calc]{datetime2}
+\usepackage{fmtcount}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[nottoc, notlot, notlof]{tocbibind}
+\usepackage{tocloft}
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{cancel}
+\usepackage{textcomp}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc}
+\usepackage{polynom}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+\pgfplotsset{compat=1.15}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\usepackage{adjustbox}
+
+\newcommand{\dropsign}[1]{\smash{\llap{\raisebox{-.5\normalbaselineskip}{$#1$\hspace{2\arraycolsep}}}}}%
+
+
+\parindent 0ex
+
+\pgfplotsset{width=10cm,compat=1.9}
+
+\def\imj{\mathrm{j}}
+\def\sen{\mathrm{sen}}
+
+\newcommand{\lapl}[1]{\mathscr{L} \left\lbrace {#1} \right\rbrace}
+\newcommand{\ilapl}[1]{\mathscr{L}^{-1} \left\lbrace {#1} \right\rbrace}
+
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+\renewcommand{\baselinestretch}{1.1}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+	
+\newcommand{\highlight}[2]{\colorbox{#1}{$\displaystyle #2$}}
+
+\graphicspath{{\ProjectRoot/commons/img/}}
+
+\newcommand*{\ProjectRoot}{../../matematica-superior}
+
+
+\begin{document}
+		
+	\begin{titlepage}
+		\begin{center}
+			\vspace*{0.5cm}
+			\Large{\textbf{Universidad Tecnológica Nacional}}\\
+			\Large{\textbf{Facultad Regional Buenos Aires}}\\
+			\begin{center}
+				\includegraphics[scale=0.4]{logoutn.png}
+			\end{center}
+			\vfill
+			\line(1,0){400}\\
+			\vspace*{0.3cm}
+			\huge{\textbf{Matemática Superior}}\\
+			\Large{\textbf{Unidad 11: Resolución numérica de ecuaciones diferenciales}}\\
+			\large{Ejercicios resueltos}
+			\line(1,0){400}\\
+			\vfill
+			Tomás Moreira \\
+			
+			\DTMnewdatestyle{mydate}{%
+				\renewcommand{\DTMdisplaydate}[4]{%
+					\DTMMonthname{##2} \number##1
+				}
+				\renewcommand{\DTMDisplaydate}{\DTMdisplaydate}
+			}
+			
+			\DTMsetdatestyle{mydate}
+			\today
+				
+				
+		\end{center}
+	\end{titlepage}
+
+	\tableofcontents
+	\thispagestyle{empty}
+	\clearpage
+
+	\setcounter{page}{1}
+	
+	\section{Ejercicio 1}
+	¿Es posible determinar si el problema de valor inicial $y'(t)=f(x,y)$ con $x \in [a,b] \wedge y(a)=\alpha$ tiene solución y si está bien planteado?
+	
+	\begin{enumerate}[label=\alph*)]
+		\item $y'=y\cos(x) \;\;\;\;\; x\in[0,1] \;\; y(0)=1$
+		\item $y'=\frac{2}{x}y+e^xx^2 \;\;\;\;\; x\in[1,2] \;\; y(1)=0$
+		\item $y'=1-y \;\;\;\;\; x\in[0,1] \;\; y(0)=0$
+		\item $y'=-xy+\frac{4x}{y} \;\;\;\;\; x\in[0,1] \;\; y(0)=1$
+		\item $y'=x^2y+1 \;\;\;\;\; x\in[0,1] \;\; y(0)=1$
+	\end{enumerate}
+	
+	Un problema de valor inicial $\begin{cases}
+		y'=f(t,y) \\
+		y(a)=\alpha
+	\end{cases}$ $t \in [a;b]$ está bien planteado si cumple con las siguientes condiciones:
+	\begin{itemize}
+		\item $f(t,y)$ es continua en $R=\left\lbrace(t,y) / t \in [a;b] \wedge y \in [c;d]\right\rbrace$
+		\item Cumple con la condición de Lipschitz en $R$
+	\end{itemize}
+
+	La condición de Lipschitz para una función $f(t,y)$ se cumple si $\exists L  ,L>0 \; / \; |f(t,y_1)-f(t,y_2)|\le L|y_1-y_2|$. Donde $L$ es la constante de Lipschitz.
+	
+	\textbf{Propiedad:} $\displaystyle L=\max_{a\le t \le b} \left|\frac{\partial f(t,y)}{\partial y}\right|$
+	
+	a) $y'=y\cos(x) \;\;\;\;\; x\in[0,1] \;\; y(0)=1$
+	
+	Planteamos la definición:
+	
+	$|y_1\cos(x)-y_2\cos(x)|\le |y_1-y_2||\cos(x)|$, como $x \in [0,1]$, y estamos acotando, el coseno es máximo para $x=0$: $|y_1-y_2||\cos(x)| \le 1\cdot |y_1-y_2|$. Se cumple la condición de Lipschitz, ya que encontramos un $L$.
+	
+	b) $y'=\frac{2}{x}y+e^xx^2 \;\;\;\;\; x\in[1,2] \;\; y(1)=0$
+	
+	Vamos a usar la propiedad para encontrar el $L$ en este caso:
+	
+	$\displaystyle L=\max_{a\le t \le b} \left|\frac{\partial f(t,y)}{\partial y}\right|=\displaystyle \max_{1\le x \le 2} \left|\frac{\partial ( \frac{2}{x}y+e^xx^2)}{\partial y}\right|=\max_{1\le x \le 2} \left|\frac{2}{x}\right|=2 \implies L=2$\\
+	
+	c) $y'=1-y \;\;\;\;\; x\in[0,1] \;\; y(0)=0$
+	
+	$|1-y_1-1+y_2|\le |-y_1+y_2|\le |-1|\cdot |y_1-y_2| \implies L=1$
+	
+	Por derivada parcial:
+	
+	$\displaystyle \max_{0\le x \le 1} \left|\frac{\partial (1-y)}{\partial y}\right|=\max_{0\le x \le 1} |-1|=1 \implies L=1$\\
+	
+	d) $y'=-xy+\frac{4x}{y} \;\;\;\;\; x\in[0,1] \;\; y(0)=1$
+	
+	Por derivada parcial:
+	$\displaystyle \max_{0\le x \le 1} \left|\frac{\partial ( -xy+\frac{4x}{y})}{\partial y}\right|=\max_{0 \le x \le 1} \left|-x-\frac{4x}{y^2}\right|=???$
+	
+	La derivada parcial depende de $y$, pero no tenemos definido ningún rango de valores para $y$, no sabemos por donde acotar. No es posible encontrar una $L$, por ende el problema no está bien planteado.
+	
+	Por definición:
+	
+	$\displaystyle \left|-xy_1+\frac{4x}{y_1}+xy_2-\frac{4x}{y_2}\right| \le \left|-x(y_1-y_2)+\frac{4x}{y_1}-\frac{4x}{y_2}\right| \le ????$
+	
+	No hay forma de despejar $L$, ya que tengo las $y$ en numerador y denominador.\\
+	
+	e) $y'=x^2y+1 \;\;\;\;\; x\in[0,1] \;\; y(0)=1$
+	
+	Por derivada parcial:
+	
+	$\displaystyle \max_{0\le x \le 1} \left|\frac{\partial (x^2y+1)}{\partial y}\right|=\max_{0 \le x \le 1} \left|x^2\right|=1 \implies L=1$
+	
+	Como pudimos encontrar un $L$, el problema está bien planteado.
+
+	\section{Ejercicio 2}
+	Marque la opción correcta:
+	
+	La Ecuación diferencial $y'(t)=-ty$ con $y(0)=1$ en $R=\left\lbrace(t,y) \in \mathbb{R} \;/\; 0\le t \le 3 \wedge 0\le y \le 2 \right\rbrace$
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Cumple la condición de Lipschitz con $L=2$
+		\item Cumple la condición de Lipschitz con $L=3$
+		\item Cumple la condición de Lipschitz con $L=6$
+		\item No cumple la condición de Lipschitz en $\mathbb{R}$
+	\end{enumerate}
+
+	Calculamos la derivada parcial:
+	
+	$\displaystyle \max_{0\le t \le 3} \left|\frac{\partial (-ty)}{\partial y}\right|=\max_{0 \le t \le 3} |-t|=3 \implies L=3$
+	
+	\textbf{La respuesta correcta es la b.}
+
+	\section{Ejercicio 4}
+	Resuelva las siguientes E.D. por medio de Euler, con el tamaño de paso indicado en cada una:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item $y'=y+1 \;\;\;\;\;\;\;\;$ con $y(0)=0 \;\;\;\;\; y(0.1)=? \;\;\;\;$ con $h=0.02$
+		\item $y'=2(y-1)/t \;\;\;\;\;\;\;\;$ con $y(1)=2 \;\;\;\;\; y(1.5)=? \;\;\;\;$ con $h=0.1$
+		\item $y'-y=2t-t^2 \;\;\;\;\;\;\;\;$ con $y(0)=1 \;\;\;\;\; y(1)=? \;\;\;\;$ con $h=0.2$
+	\end{enumerate}
+
+	El método de Euler proviene de la serie de Taylor de orden 1.
+	
+	Teniendo en cuenta un problema de valor inicial: $\begin{cases}
+		y'=f(t;y) \\ y(a)=\alpha
+	\end{cases}$
+	
+	$\displaystyle y(t)=y(t_i)+y'(t_i)(t-t_i)+\frac{y''(t_i)}{2!}(t-t_i)^2+\frac{y'''(t_i)}{3!}(t-t_i)^3+\dots+\frac{y^{(n)}(t_i)}{n!}(t-t_i)^n+\dots$
+	
+	Si nos quedamos con los primeros dos términos:
+	
+	$y(t)=y(t_i)+y'(t_i)(t-t_i)$
+	
+	Donde, por notación de método numérico reemplazamos a las $y$ por $w$. Por convención, las $w$ indican que es una solución aproximada, quedando la fórmula:
+	
+	$w_{i+1}=w_i+f(t_i,w_i)(t_{i+1}-t_i)$\\
+	$w_{i+1}=w_i+h\cdot f(t_i,w_i)$
+
+	a) $y'=y+1 \;\;\;\;\;\;\;\;$ con $y(0)=0 \;\;\;\;\; y(0.1)=? \;\;\;\;$ con $h=0.02$
+	
+	Para resolverlos, hay que aplicar sucesivamente la fórmula de Euler, evaluada en los valores del ejercicio.
+	
+	Entonces, primero hay que evaluar para obtener $w_1$. Para eso usamos los valores iniciales:
+	
+	$w_1=w_0+h \cdot f(t_0, w_0)=0+0.02 \cdot (0+1)=0.02$
+	
+	Para calcular los siguientes, usamos los valores que calculamos.
+	
+	$w_2=w_1+h \cdot f(t_1, w_1)=0.02+0.02 \cdot (0.02+1)=0.0404$
+	
+	$w_3=w_2+h \cdot f(t_2, w_2)=0.0404+0.02(0.0404+1)=0.061208$
+	
+	Y asi sucesivamente.
+	
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		$i$ & $t_i$ & $w_i$ & $w_{i+1}$ \\
+		\hline
+		0 & 0 & 0 & 0.02 \\
+		\hline
+		1 & 0.02 & 0.02 & 0.0404\\
+		\hline
+		2 & 0.04 & 0.0404 & 0.061208 \\
+		\hline
+		3 & 0.06 & 0.061208 & 0.08243216 \\
+		\hline
+		4 & 0.08 & 0.08243216 & 0.1040808032 \\
+		\hline
+	\end{tabular}
+
+	\section{Ejercicio 5}
+	De las siguientes afirmaciones sobre métodos de resolución numérica de ED, indique cual de ellas es verdadera:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item En cualquier método, al reducir el $h$ a la mitad, el error global se reduce a la mitad.
+		
+		\textbf{FALSO}. Esto ocurre solamente en el método de Euler, para los otros métodos no necesariamente siempre la relación es lineal.
+		
+		\item Es preferible utilizar el método de Taylor de orden 2 en vez de Heun.\\
+		
+		\textbf{FALSO}. Para el método de Taylor hay que calcular derivadas de dos variables (es decir implícitas) de segundo orden, cosa que puede complicarse. En cambio con Heun logramos una precisión bastante buena sin necesidad de calcular derivadas.\\
+		
+		\item Si $y(t)$ es lineal, al resolver $y'(t)=f(t,y)$ por Euler se obtiene resultado exacto, para todo h.
+		
+		\textbf{VERDADERO}. Como vimos, el método de Euler proviene el desarrollo en serie de Taylor de orden 1. Para el caso de una función $y(t)$ lineal, se anularían todas las derivadas de orden 2 en adelante, quedando el desarrollo de Taylor exactamente igual a la fórmula de Euler.
+		
+		$y(t)=y(t_i)+y'(t_i)(t-t_i)$
+		
+		\item Ninguna de las anteriores es correcta.
+	\end{enumerate}
+
+	\section{Ejercicio 7}
+	Sea el problema de valor inicial: $y'=x/y$ siendo $y(0)=1$
+	
+	Calcule $y(0.2)$ por el método de HEUN tomando $h=0.1$\\
+	
+	El método de Heun (o Euler modificado) en esencia consiste en aplicar el método de Euler dos veces. La fórmula es la siguiente:
+	
+	$\displaystyle w_{i+1}=w_i+\frac{h}{2}[f(t_i,w_i)+f(t_{i+1}, w_{i+1}^*)]$, donde $w_{i+1}^*=w_i+h f(t_i,w_i)$
+	
+	Es decir que, con el método de Euler predecimos un valor para $w$ y luego con Heun corregimos dicho valor.
+	
+	Vamos a resolver el ejercicio paso a paso:
+	
+	$w_0=1, t_0=0, h=0.1$
+	
+	$w_1=w_0+\frac{h}{2}[f(t_0,w_0)+f(t_{1}, w_{1}^*)]$
+	
+	$\displaystyle w_1^*=w_0+hf(t_0, w_0)=1+0.1\left(\frac{0}{1}\right)=1$
+	
+	$\displaystyle w_1 = 1+\frac{0.1}{2}\left[f(0,1)+f(0.1,1)\right]=1+\frac{0.1}{2}\left[\frac{0}{1}+\frac{0.1}{1}\right]=1.005$
+	
+	\line(1,0){400}
+	
+	$\displaystyle w_2=w_1+\frac{0.1}{2}\left[f(t_1,w_1)+f(t_2, w_2^*)\right]$
+	
+	$\displaystyle w_2^*=1.005+0.1(\frac{0.1}{1.005})=1.014950249$
+	
+	$\displaystyle w_2=1.005+\frac{0.1}{2}\left[\frac{0.1}{1.005}+\frac{0.2}{1.014950249}\right]=1.019827824$
+	
+	
+	\section{Ejercicio 8}
+	Dado el problema: $y'(t^2+t)-y=0$ con $y(1)=0.5$
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Halle $y(2)$ con $h=0.1$ mediante Euler.
+		\item Halle $y(2)$ con $h=0.5$ mediante RK 4° orden.
+		\item ¿Cuál es más precisa?
+	\end{enumerate}
+
+	Para resolver el problema, primero hay que lograr $y'=f(t,y)$
+	
+	$\displaystyle y'=\frac{y}{t^2+t}$
+	
+	Con esta ecuación, podemos empezar a resolver.
+	
+	Los métodos de Runge-Kutta son métodos que logran mucha precisión sin necesidad de calcular derivadas. En nuestro caso vamos a ver el Runge-Kutta de orden 4:
+	
+	$\displaystyle w_{i+1}=w_i+\frac{1}{6}(k_1+2k_2+2k_3+k_4)$
+	
+	$\displaystyle k_1=hf(t_i,w_i)$
+	
+	$\displaystyle k_2=hf\left(t_i+\frac{h}{2}, w_i+\frac{k_1}{2}\right)$
+	
+	$\displaystyle k_3=hf\left(t_i+\frac{h}{2},w_i+\frac{k_2}{2}\right)$
+	
+	$\displaystyle k_4=hf\left(t_i+h,w_i+k_3\right)$
+	
+	\section{Ejercicio 10}
+	Dadas las siguientes afirmaciones referentes a los métodos numéricos de resolución de ecuaciones diferenciales, indique si son verdaderas o falsas justificando:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Con el método de Euler se puede lograr siempre muy buena precisión
+		
+		\textbf{Falso}. Depende de la función y también depende que nosotros consideremos como ``buena precisión''\\
+		
+		\item Los métodos de Runge-Kutta son de paso simple.
+		
+		\textbf{Verdadero}. Ya que solo usamos los $w_i$ para calcular $w_{i+1}$ \\
+		
+		\item El método de Euler es un método de paso simple.
+		
+		\textbf{Verdadero}. Por la misma razón que el item b.\\
+		
+		\item La ventaja de los métodos de Runge Kutta es que obtienen la misma precisión que Taylor de orden superior sin necesidad de calcular derivadas de orden superior.
+		
+		\textbf{Verdadero}. Está demostrado que RK de 4to orden tiene la misma precisión que Taylor de 4to grado, y la ventaja es que RK no calcula derivadas.
+	\end{enumerate}	
+
+	\section{Ejercicio 12}
+	La fórmula: $\displaystyle w_{i+1}=w_{i-3}+\frac{4}{3}h[2f(t_i;w_i)-f(t_{i-1};w_{i-1})+2f(t_{i-2};w_{i-2})]$, corresponde a:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item método de paso simple
+		\item método de 2 pasos
+		\item fórmula explícita
+		\item ninguna de las anteriores
+	\end{enumerate}
+
+	Es un método de 4 pasos (usa $w_i,w_{i-1},w_{i-2},w_{i-3}$) y es explícita porque no usa $w_{i+1}$ en el cálculo. Por ende es correcta solo la afirmación c.
+
+	\section{Ejercicio 13}
+	Dadas las siguientes afirmaciones referentes a los métodos numéricos de resolución de ecuaciones diferenciales, indique si son verdaderas o falsas justificando:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Una fórmula implícita no puede usarse como etapa predictora
+		
+		\textbf{Verdadero}. Debido a que las fórmulas explícitas deben usarse como predictoras.\\
+		
+		\item La fórmula: $w_{i+1}=w_i+\frac{h}{24}[9f(t_{i+1};w_{i+1})+19f(t_i;w_i)-5f(t_{i-1};w_{i-1})+f(t_{i-2};w_{i-2})]$ corresponde a un método de paso múltiple. (Si es así, indique de cuántos pasos).\\
+		
+		\textbf{Verdadero}. Es una fórmula de 3 pasos.\\
+		MUCHO CUIDADO. La $w_{i+1}$ no cuenta como paso, solo cuentan como paso desde la $w_i$ para atrás. La $w_{i+1}$ solo da la condición de implícita y de que la fórmula se puede usar en etapa correctora.
+		
+		\item La fórmula anterior solamente puede usarse como etapa correctora.
+		
+		\textbf{Verdadero}, porque es implícita.
+	\end{enumerate}
+
+	\section{Ejercicio 15}
+	La velocidad de emisión de radioactividad de una sustancia es proporcional a la cantidad de sustancia remanente. La ecuación diferencial que describe este fenómeno es:
+	$$y'=-ky$$
+	donde el signo menos refleja el hecho de que la radioactividad disminuye con el tiempo.\\
+	Supongamos que $k=0.01$ y que hay $100g.$ del material al tiempo $t=0$. ¿Cuánto material queda cuando $t=100$?
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Halle la respuesta en forma analítica.
+		\item Halle la respuesta numéricamente con Euler ($h=25,h=10,h=5,h=1$)
+		\item Halle la respuesta numéricamente con Heun ($h=20,h=10$)
+		\item Halle la respuesta numéricamente con Runge-Kutta de 4to orden ($h=100,h=50$)
+	\end{enumerate}
+
+	\textbf{Inciso a}
+	
+	Volviendo al primer parcial, resolvamos por Transformada de Laplace:
+	
+	$y'=-0.01y \;\;\;,\;\;\;y(0)=100$
+	
+	$sY(s)-y(0)=-0.01Y(s)$
+	
+	$\displaystyle Y(s)=\frac{100}{s+0.01}$
+	
+	$\displaystyle y(t)=100e^{-0.01t}$
+	
+	$\displaystyle y(100)=36.78794412$
+	
+	\textbf{Incisos bcd} en Excel
+\end{document}
+ 

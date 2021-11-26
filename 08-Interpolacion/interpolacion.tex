@@ -26,6 +26,7 @@
 \pgfplotsset{compat=1.15}
 \usepackage{mathrsfs}
 \usetikzlibrary{arrows}
+\usepackage{adjustbox}
 
 \newcommand{\dropsign}[1]{\smash{\llap{\raisebox{-.5\normalbaselineskip}{$#1$\hspace{2\arraycolsep}}}}}%
 
@@ -66,7 +67,7 @@
 			\line(1,0){400}\\
 			\vspace*{0.3cm}
 			\huge{\textbf{Matemática Superior}}\\
-			\Large{\textbf{Unidad 7: Sistemas de ecuaciones lineales}}\\
+			\Large{\textbf{Unidad 8: Interpolación}}\\
 			\large{Ejercicios resueltos}
 			\line(1,0){400}\\
 			\vfill
@@ -92,456 +93,395 @@
 
 	\setcounter{page}{1}
 	
-	\section{Ejercicio 1 (tipos de matrices)}
-	Dadas las siguientes matrices: $\;\;\;$
-	$A=\begin{bmatrix}
-		-2 & 1 \\
-		1 & -3
-	\end{bmatrix} \;\;\;
-	B=\begin{bmatrix}
-		7 & 2 & 0 \\
-		3 & 5 & -1 \\
-		0 & 5 & -6 \\
-	\end{bmatrix} \;\;\;
-	C=\begin{bmatrix}
-		2 & -1 & 0 \\
-		-1 & 4 & 2 \\
-		0 & 2 & 2 \\
-	\end{bmatrix}
-	$
-	
-	Analice si cada una de ellas es:
-	\begin{enumerate}[label=\alph*)]
-		\item Simétrica
-		\item Singular
-		\item Dominante diagonalmente (especifique si lo es en sentido estricto)
-	\end{enumerate}
-
-	Arrancamos con esta unidad, primero recorreremos ejercicios que son más "básicos" de matrices, y luego nos metemos de lleno con los métodos iterativos.
-	
-	Comencemos para la matriz $A$:
-	
-	\textbf{Para el inciso a}, de Álgebra, recordemos que una matriz es simétrica si $A=A^t$.\\
-	Trasponemos la matriz, quedando: $A^t=\begin{bmatrix}
-		-2 & 1 \\
-		1 & -3
-	\end{bmatrix}$, como $A=A^t$, la matriz \fcolorbox{black}{yellow}{es simétrica}.
-
-	\textbf{Para el inciso b}: una matriz es singular si su determinante es igual a 0.
-	
-	$det(A)=\begin{vmatrix}
-		-2 & 1 \\
-		1 & -3
-	\end{vmatrix}=(-2)\cdot(-3)-1\cdot1=5\ne0$, por ende, \fcolorbox{black}{yellow}{no es singular}.
-
-	\textbf{Para el inciso c}, hay que recordar la definición de matriz diagonal dominante:\\
-	Una matriz es diagonal dominante si: $\displaystyle |a_{ii}|\ge \sum_{j=1, i\ne j}^{n} |a_{ij}| \; \forall i=1\dots n$
-	
-	Y la matriz será estricamente diagonal dominante si $\displaystyle |a_{ii}| > \sum_{j=1, i\ne j}^{n} |a_{ij}| \; \forall i=1\dots n$, es decir no se considera la igualdad, sino que es mayor estricto.
-	
-	Dicho en criollo, nos está queriendo decir que el valor absoluto de un elemento de la diagonal principal debe ser mayor o igual a la suma de los valores absolutos de los elementos de la misma fila, y esto debe ocurrir en todas las filas.
-	
-	Para nuestro caso: $\begin{bmatrix}
-		-2 & 1 \\
-		1 & -3
-	\end{bmatrix}$$\begin{matrix}
-	\rightarrow |-2| \ge |1| \\
-	\rightarrow |-3| \ge |1|
-\end{matrix}$
-
-	Como resultan mayores todos los elementos de la diagonal, \fcolorbox{black}{yellow}{es diagonalmente dominante} y, además, lo es en \fcolorbox{black}{yellow}{forma estricta}.\\
-	
-	Ahora, comencemos con la matriz $B=\begin{bmatrix}
-		7 & 2 & 0 \\
-		3 & 5 & -1 \\
-		0 & 5 & -6 \\
-	\end{bmatrix}$.
-	
-	Inciso a:
-	
-	$B^t=\begin{bmatrix}
-		7 & 3 & 0 \\
-		2 & 5 & 5 \\
-		0 & -1 & -6 \\
-	\end{bmatrix} \;\;\;$, como $B\ne B^t$ la matriz \fcolorbox{black}{yellow}{no es simétrica}.
-
-	Inciso b:
-	
-	$det(B)=\begin{vmatrix}
-		7 & 2 & 0 \\
-		3 & 5 & -1 \\
-		0 & 5 & -6 \\
-	\end{vmatrix} = [7 \cdot 5 \cdot (-6) + 2 \cdot (-1) \cdot 0 + 3 \cdot 5 \cdot 0] - [0 \cdot 5 \cdot 0 + 5 \cdot (-1) \cdot 7 + 3 \cdot 2 \cdot (-6)]$\\
-	$= -210 + 71 = -139 \ne 0 \rightarrow $ no es singular.
-	
-	Inciso c:$
-	\begin{bmatrix}
-		7 & 2 & 0 \\
-		3 & 5 & -1 \\
-		0 & 5 & -6 \\
-	\end{bmatrix}$
-	$\begin{matrix}
-	\rightarrow |7| \ge |2| + |0|\\
-	\rightarrow |5| \ge |3| + |-1| \\
-	\rightarrow |-6| \ge |5| + |0| \\
-	\end{matrix}$
-
-	Las desigualdades son todas ciertas, por ende, la matriz \fcolorbox{black}{yellow}{es diagonal dominante}, y lo es en \fcolorbox{black}{yellow}{forma estricta}.\\
-	
-	Por último, veamos la matriz $C=\begin{bmatrix}
-		2 & -1 & 0 \\
-		-1 & 4 & 2 \\
-		0 & 2 & 2 \\
-	\end{bmatrix}$
-
-	Inciso a:
-	
-	$C^t=\begin{bmatrix}
-		2 & -1 & 0 \\
-		-1 & 4 & 2 \\
-		0 & 2 & 2 \\
-	\end{bmatrix}$, como $C=C^t$, la matriz es simétrica.
-
-	Inciso b: $|C|=16-10=6$, por ende no es singular,
-	
-	Inciso c:
-	
-	$\begin{bmatrix}
-		2 & -1 & 0 \\
-		-1 & 4 & 2 \\
-		0 & 2 & 2 \\
-		\end{bmatrix}$$
-	\begin{matrix}
-		\rightarrow |2| \ge |-1| + |0| \\
-		\rightarrow |4| \ge |-1| + |2| \\
-		\rightarrow |2| \ge |0| + |2| \\
-		\end{matrix}
-	$
-	
-	Como vemos la matriz es diagonal dominante, aunque en este caso no lo es en sentido estricto, debido a que en la tercer fila la suma es igual al valor absoluto del elemento de la diagonal principal.
-	
-	\section{Ejercicio 2 (radio espectral)}
-	Dadas las siguientes matrices: $A=\begin{bmatrix}
-		2 & -1\\
-		-1 & 2
-	\end{bmatrix} \;\;\; B=\begin{bmatrix}
-	2 & 1 & 0 \\
-	1 & 2 & 0 \\
-	0 & 0 & -5 \\
-\end{bmatrix}$
-
-	Calcule:
-	\begin{enumerate}[label=\alph*)]
-		\item Los autovalores
-		\item El radio espectral
-		\item Las normas $\lVert A \rVert_{2}$ y $\lVert B \rVert_{2}$
-	\end{enumerate}
-
-	Empecemos con la matríz $A=\begin{bmatrix}
-		2 & -1\\
-		-1 & 2
-	\end{bmatrix}$
-
-	\textbf{Para el inciso a}, debemos hacer $|A-\lambda I|=0$, es decir:
-	
-	$|A-\lambda I|=\begin{vmatrix}
-		2 - \lambda & -1\\
-		-1 & 2 \lambda
-	\end{vmatrix} = (2-\lambda)(2-\lambda) - [(-1)(-1)]=4-2\lambda-2\lambda+\lambda^2-1=\boxed{\lambda^2-4\lambda+3}$
-	
-	Al resolver las raíces del polinomio característico, obtenemos los autovalores: \fcolorbox{black}{yellow}{$\lambda_1=3\;,\lambda_2=1$}
-	
-	\textbf{Para el inciso b}, por definición el radio espectral es $\rho(A)=|\text{máx} \lambda_i|$. En este caso es $\rho(A)=3$.
-	
-	Por último, \textbf{para el inciso c}, debemos recordar que la norma 2 de una matriz es: $\sqrt{\rho(A^t\cdot A)}$, entonces debemos calcular $A^t \cdot A$
-	
-	$A^t\cdot A = \begin{pmatrix}
-		2 & -1\\
-		-1 & 2
-	\end{pmatrix} \cdot \begin{pmatrix}
-	2 & -1\\
-	-1 & 2
-\end{pmatrix}=\begin{pmatrix}
-5 & -4\\
--4 & 5
-\end{pmatrix}$
-
-	Ahora, habría que calcular el radio de espectral a esta última matriz:
-	$|(A^tA)-\lambda I|=\begin{vmatrix}
-		5 - \lambda & -4\\
-		-4 & 5-\lambda
-	\end{vmatrix}=(5-\lambda)(5-\lambda)-(-4)(-4)=\lambda^2-10\lambda+9=0$, las soluciones son: $\lambda_1=9 \;, \lambda_2=1$
-
-	El radio espectral es, en efecto, 9.
-	
-	Por último, $\lVert A \rVert_2=\sqrt{\rho(A^tA)}=\sqrt{9}=3$.
-	
-	-- mostrar el cálculo de autovalores con wolfram
-	
-	\section{Ejercicio 3 (normas)}
-	Dada la matriz $A=\begin{bmatrix}
-		5 & -5 & -7\\
-		-4 & 2 & -4 \\
-		-7 & -4 & 5
-	\end{bmatrix}$. Halle las normas $\lVert A \rVert_1$ y $\lVert A \rVert_\infty$
-
-	Este ejercicio es más sencillo que los anteriores, que requieren más cálculos.
-	
-	Tenemos que sumar las filas (en valor absoluto), para el caso de la norma infinito, y análogo pero con las columnas para la norma 1.
-	
-	$\begin{bmatrix}
-		5 & -5 & -7\\
-		-4 & 2 & -4 \\
-		-7 & -4 & 5
-	\end{bmatrix}$$\begin{matrix}
-	\rightarrow |5| + |-5| + |-7| = 17 \\
-	\rightarrow |-4| + |2| + |-4| = 10 \\
-	\rightarrow |-7| + |-4| + 5 = 16
-\end{matrix}$\\$
-\begin{matrix}
-	\;\;\;\downarrow & \downarrow & \downarrow\\
-	\;\;\;16 & 11 & 16\\
-\end{matrix}$
-		
-		Luego de hacer las sumas, el máximo de esos valores será la norma correspondiente. Para el caso de la norma infinito es $\lVert A \rVert_\infty=17$, y para la norma 1 es $\lVert A \rVert_1=16$.
-		
-		Una regla mnemotécnica es mirar la forma de los símbolos, el infinito es alargado, por ende, sumo los elementos de toda una fila; mientras que el uno está a lo alto, entonces sumo las columnas.
-		
-	\section{Ejercicio 4 (diagonal dominante)}
-	Dadas las matrices $A=\begin{pmatrix}
-	2k-3 & 4 & 1 \\
-	2 & 5 & 2 \\
-	2 & 4 & 10-k	
-	\end{pmatrix} \;\;$ y $B=\begin{pmatrix}
-	3k-3 & 4 & -1 \\
-	2 & 5+k^2 & -2 \\
-	7 & 4 & 10-k
-	\end{pmatrix}$
+	\section{Ejercicio 3 (Lagrange)}
+	Sean los siguientes puntos: $(0,0), (1/6, 1/2) \text{ y } (1/2, 1)$
 	
 	\begin{enumerate}[label=\alph*)]
-		\item Indique los valores de $k \in \mathbb{R}$ tal que sean diagonalmente dominantes.
-		\item ¿Para qué valores de $k \in \mathbb{R}$, son estricamente diagonal dominantes?
+		\item Verifique que dichos puntos pertenecen a la función $f(x)=\sen(\pi x)$
+		\item Halle el polinomio interpolante de Lagrange.
+		\item Calcule $\sen(\pi/3)$ mediante el polinomio hallado en b)
+		\item Estime el error que se comete en c)
 	\end{enumerate}
 
-	Los incisos a y b son muy parecidos, solo va a variar un signo de los que vamos a usar. Empecemos para la matriz A:
+	\textbf{Inciso a):}\\
+	$f(x)=\sen(\pi x)$
 	
-	Sabemos que para ser diagonal dominante deben ser los módulos de los elementos de la diagonal principal mayores a la suma de los módulos de los valores de la misma fila, es decir, debemos plantear:
+	$f(0)=\sen(0)=0$\\
+	$f(1/6)=\sen(1/6)=1/2$\\
+	$f(1/2)=\sen(1/2)=1$
 	
-	$|2k-3| \ge 4 + 1 \;\;$ y $\;\;|10-k| \ge 2 + 4$
+	Todos los puntos verifican
 	
-	$|2k-3| \ge 5$ 
+	\textbf{Inciso b):}
 	
-	$2k-3 \ge 5 \;\; \lor \;\; 2k-3\le -5 $
+	Para este punto hay que recordar la fórmula del polinomio interpolante de Lagrange:
+	$$\displaystyle P(x)=\sum_{i=0}^{n}\frac{y_i}{L_i(x_i)}L_i(x)$$
+	Los $L_i(x)$ son los factores $(x-x_k)$ pero sin incluir al $x_i$.
 	
-	$\boxed{k \ge 4 \;\; \lor \;\; k \le -1}$
+	De este modo, para nuestro caso los $L$ son:
 	
-	$|10-k| \ge 6$
+	$L_0(x)=(x-1/6)(x-1/2) \rightarrow L_0(x_0)=L(0)=1/12$\\
+	$L_1(x)=(x-0)(x-1/2) \rightarrow L_1(x_1)=L(1/6)=-1/18$\\
+	$L_2(x)=(x-0)(x-1/6) \rightarrow L_2(x_2)=L(1/2)=1/6$
 	
-	$10-k \ge 6 \;\; \lor \;\; 10-k\le -6 $
+	Entonces nuestro polinomio de Lagrange será:
 	
-	$\boxed{k \le 4 \;\; \lor \;\; k \ge 16}$
+	$\displaystyle P(x)=\frac{0}{1/12}(x-1/6)(x-1/2)-\frac{1/2}{1/18}x(x-1/2)+\frac{1}{1/6}x(x-1/6)=-9x(x-1/2)+6x(x-1/6)$
 	
-	Tenemos que hacer la intersección de estos dos conjuntos. Termina quedándonos:\\ \fcolorbox{black}{yellow}{$k \in (-\infty; -1] \cup \{4\} \cup [16; +\infty)$}
+	\textbf{Inciso c):}
 	
-	Luego, para el \textbf{inciso b} lo que cambia es el signo de la desigualdad, que ya no cuenta con el igual, de modo que quedan:
+	$\displaystyle P(1/3)=-9\cdot\frac{1}{3}\left( \frac{1}{3}-\frac{1}{2} \right) + 6 \cdot \frac{1}{3}\left(\frac{1}{3}-\frac{1}{6}\right)=\frac{5}{6}=0.8333333$
 	
-	$\boxed{k > 4 \;\; \lor \;\; k < -1}$
+	\textbf{Inciso d):}
 	
-	$\boxed{k < 4 \;\; \lor \;\; k > 16}$
+	Para estimar el error, debemos ver el valor real:
 	
-	Al hacer la intersección, el 4 deja de ser solución y no incluimos los extremos como solución:\\
-	\fcolorbox{black}{yellow}{$k \in (-\infty; -1) \cup (16; +\infty)$}\\
+	$sen(\pi/3)=0.866025...$
 	
-	Vamos con la matriz $B=\begin{pmatrix}
-		3k-3 & 4 & -1 \\
-		2 & 5+k^2 & -2 \\
-		7 & 4 & 10-k
-	\end{pmatrix}$
+	El error es entonces: $e=0.866025-0.833333=0.032692$
+	
+	\section{Ejercicio 4 (Lagrange)}
+	Sean $\alpha, \beta, \gamma, \delta \in \mathbb{R}$. ¿Qué relación debe cumplirse entre $\alpha, \beta, \gamma \text{ y } \delta$ para que exista un polinomio real $p(x)$ de grado no mayor a 2 tal que $p(-1)=\alpha$, $p(1)=\beta$, $p(3)=\gamma$ y $p(0)=\delta$?
+	
+	Vamos a plantear el polinomio de Lagrange para los datos del ejercicio.
+	
+	Primero, tabulemos:
+	
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		i & 0 & 1 & 2 & 3\\
+		\hline
+		$x_i$ & -1 & 0 & 1 & 3\\
+		\hline
+		$y_i$ & $\alpha$ & $\delta$ & $\beta$ & $\gamma$\\
+		\hline
+	\end{tabular}
 
-	Planteamos lo mismo que el anterior:
+	Planteamos:
 	
-	$|3k-3| \ge 5$
+	$L_0(x)=x(x-1)(x-3) \rightarrow L_0(x_0)=L_0(-1)=-8$\\
+	$L_1(x)=(x+1)(x-1)(x-3) \rightarrow L_1(x_1)=L_1(0)=3$\\
+	$L_2(x)=(x+1)x(x-3) \rightarrow L_2(x_2)=L_2(1)=-4$\\
+	$L_3(x)=(x+1)x(x-1) \rightarrow L_3(x_3)=L_3(3)=24$
 	
-	$3k-3 \ge 5 \;\; \lor \;\; 3k-3 \le -5$
+	Queda el polinomio:
 	
-	$\boxed{k \ge \frac{8}{3} \;\; \lor \;\; k \le -\frac{2}{3}}$
+	$\displaystyle P(x)=\frac{\alpha}{-8}x(x-1)(x-3)+\frac{\delta}{3}(x+1)(x-1)(x-3)+\frac{\beta}{-4}(x+1)x(x-3)+\frac{\gamma}{24}(x+1)x(x-1)$
 	
-	$\boxed{|5+k^2|\ge 4 \rightarrow$ válida $\forall k}$
+	Ahora, como nos piden un polinomio de grado no mayor a 2 (es decir, menor o igual a 2), nos interesa que se anule el coeficiente cúbico. Para eso, debe cumplirse:
 	
-	$|10-k|\ge 11$
+	$\displaystyle \frac{\alpha}{-8}+\frac{\delta}{3}+\frac{\beta}{-4}+\frac{\gamma}{24}=0$
 	
-	$10-k \ge 11 \;\; \lor \;\; 10-k \le -11$
+	Si multiplicamos por 24, tenemos la respuesta: $-3\alpha+8\delta-6\beta+\gamma=0$
 	
-	$\boxed{k \le -1 \;\; \lor \;\; k\ge21}$
+	\section{Ejercicio 7 (Newton-Gregory)}
+	En la siguiente tabla se listan los valores de $f(x)=\sqrt x$ redondeados hasta 5 decimales.
 	
-	Al hacer la intersección de los dos conjuntos: \fcolorbox{black}{yellow}{$k \in (-\infty; -1] \cup [21; +\infty)$}.
-	
-	Por último, para la estricta, solo hay que eliminar los extremos de la solución, quedando: \\ \fcolorbox{black}{yellow}{$k \in (-\infty; -1) \cup (21; +\infty)$}
-	
-	\section{Ejercicio 5 (método de Jacobi)}
-	Aplique el método iterativo de Jacobi para resolver el sistema:
-	$$\begin{cases}
-		7x_1-x_2+4x_3=8 \\
-		3x_1-8x_2+2x_3=-4 \\ 
-		4x_1+x_2-6x_3=3
-	\end{cases}$$
+	\begin{tabular}{|c|c|c|c|c|c|c|c|}
+		\hline
+		i & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+		\hline
+		$x_i$ & 1.00 & 1.05 & 1.10 & 1.15 & 1.20 & 1.25 & 1.30\\
+		\hline
+		$y_i$ & 1.0000 & 1.02470 & 1.04881 & 1.07238 & 1.09544 & 1.11803 & 1.14017\\
+		\hline
+	\end{tabular}
 
-	realizando los cálculos con tres decimales redondeados e iterando hasta que cumpla que:
-	$$\left\lVert x_{i}^{(r+1)}-x_{i}^{(r)} \right\rVert_\infty < 0.03$$
-	
-	Para los métodos iterativos lo que hay que hacer es despejar una variable en cada una de las ecuaciones. Es decir, que en la primera ecuación debemos despejar $x_1$, en la segunda $x_2$ y en la última $x_3$, de esta manera:
-	
-	$\displaystyle \begin{cases}
-		x_1^{(r+1)}=\hspace{0.8cm}+\frac{1}{7}x_2^{(r)}-\frac{4}{7}x_3^{(r)}+\frac{8}{7}\\
-		x_2^{(r+1)}=\frac{3}{8}x_1^{(r)} \hspace{1.1cm}+\frac{1}{4}x_3^{(r)}+\frac{1}{2}\\
-		x_3^{(r+1)}=\frac{2}{3}x_1^{(r)}+\frac{1}{6}x_2^{(r)} \hspace{1.1cm}-\frac{1}{2}
-	\end{cases}$
+\begin{enumerate}[label=\alph*)]
+	\item Calcule las diferencias hasta orden sexto
+	\item Interpole las raíces de $1.01$ y $1.28$ usando las fórmulas de Newton.
+	\item Aplique la fórmula de Lagrange para obtener la raíz cuadrada de $1.12$. \textit{(no lo vamos a hacer)}
+	\item Teniendo en cuenta que $\sqrt{x}=1.05$, utilice los datos de la tabla para encontrar $x$.
+	\item Interpolar el valor $\sqrt{1.32}$.
+\end{enumerate}
 
-	Teniendo estas ecuaciones, tenemos que ahora, usar un vector inicial e ir usándolo para calcular los valores. Por lo general, el vector inicial es el vector nulo, en este caso sería $x^{(0)}=(0;0;0)$
-	
-	Con esta info, vamos al excel.
+	\textbf{Inciso a):}\\
+	\begin{tabular}{|c c c c c c c c c|}
+		\hline
+		$i$ & $x_i$ & $y_i$ & O1 & O2 & O3 & O4 & O5 & O6\\
+		\hline
+		0 & 1.00 & 1.0000  &        &        &         &          & &\\
+		  &      &         & 0.494  &        &         &          & &\\
+		1 & 1.05 & 1.02470 &        & -0.118 &         &          & &\\
+		  &      &         & 0.4822 &        & 0.06667 &          & &\\
+		2 & 1.10 & 1.04881 &        & -0.108 &         & -0.13335 & &\\
+		  &      & 		   & 0.4714 &        & 0.04    &          & 0.8 &\\
+		3 & 1.15 & 1.07238 &        & -0.102 &         & 0.06665  & & 10.66733 \\
+		  &      & 		   & 0.4612 &        & 0.05333 &          & 4.0002 &\\
+		4 & 1.20 & 1.09544 &        & -0.094 &         & 1.0667   & &\\
+		  &      & 		   & 0.4518 &        & 0.26667 &          & &\\
+		5 & 1.25 & 1.11803 &        & -0.09  &         &          & &\\
+		  &      & 		   & 0.4428 &        &         &          & &\\
+		6 & 1.30 & 1.14017 &        &        &         &          & &\\
+		\hline
+	\end{tabular}
 
-	Alerta spoiler: el método converge en 8 iteraciones con el error deseado
+	\textbf{Inciso b):}
+	Para esta parte, cabe destacar que tranquilamente se puede usar una diferencia de orden 1 (y por ende un polinomio de grado 1) para calcular los valores (interpolación lineal).
 	
-	\section{Ejercicio 6 (método de Gauss-Seidel + matrices T)}
-	Resuelva el sistema anterior usando el método de Gauss-Seidel. Halle las $T_J$ y $T_{GS}$
+	Es mucho más conveniente usar esto, antes que hacer muchos cálculos con el polinomio de grado 6.
 	
-	En efecto, hay que proceder de la misma manera que en el ejercicio anterior, hay que despejar las variables en las ecuaciones correspondientes. Lo que cambian son las fórmulas iterativas, a decir:
+	Entonces, usamos para $1.01$ los datos de 1.00 y 1.05
 	
-	$\displaystyle \begin{cases}
-		x_1^{(r+1)}=\hspace{1.3cm}+\frac{1}{7}x_2^{(r)}-\frac{4}{7}x_3^{(r)}+\frac{8}{7}\\
-		x_2^{(r+1)}=\frac{3}{8}x_1^{(r+1)} \hspace{1.2cm}+\frac{1}{4}x_3^{(r)}+\frac{1}{2}\\
-		x_3^{(r+1)}=\frac{2}{3}x_1^{(r+1)}+\frac{1}{6}x_2^{(r+1)} \hspace{0.8cm}-\frac{1}{2}
-	\end{cases}$
+	\begin{tabular}{|c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1\\
+		\hline
+		1.00 & 1.0000 & \\
+		& & 0.494\\
+		1.05 & 1.02470 & \\
+		\hline
+	\end{tabular}
+	
+	Armamos el polinomio progresivo: $p(x)=1+0.494(x-1) \rightarrow p(1.01)=1.00494$. El valor real es $1.0049875...$
+	
+	Para 1.28 podemos usar los datos de 1.25 y 1.30
+	
+	\begin{tabular}{|c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1\\
+		\hline
+		1.25 & 1.11803 & \\
+		& & 0.4428\\
+		1.30 & 1.14017 & \\
+		\hline
+	\end{tabular}
 
-	Como vemos, tanto para $x_2$ como para $x_3$ lo que pasa es que se usan valores que ya estamos calculando, es decir, estamos acelerando el método.
+	Armamos el progresivo: $p(x)=1.11803+0.4428(x-1.25) \rightarrow p(1.28)=1.131314$. El valor real es 1.13137085
 	
-	Veamos como impacta en la rapidez de la convergencia en el excel.
+	Como vemos, el error es bastante pequeño, y nos ahorramos hacer muchas cuentas.
 	
-	-----
+	\textbf{Inciso d):}\\
+	Si sabemos que $\sqrt{x}=1.05$, entonces tenemos que fijarnos por los valores de $y$. Mirando la tabla, vemos que ese valor está entre los $x$ 1.10 y 1.15
 	
-	Vemos que converge en la mitad de iteraciones. Y esto es una tendencia que no es casualidad, \textbf{por lo general, el método de Gauss-Seidel es un 50\% más rápido que el método de Jacobi}.
+	Armemos polinomio para estos valores:
 	
-	Para el punto de hallar las matrices $T_J$ y $T_{GS}$, debemos recordar:
+	\begin{tabular}{|c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1\\
+		\hline
+		1.10 & 1.04881 & \\
+		& & 0.4714\\
+		1.15 & 1.07238 & \\
+		\hline
+	\end{tabular}
+
+	$p(x)=1.04881+0.4714(x-1.1)$
 	
-	Para un sistema definido como $A \bullet X = B$, con $A$ siendo la matriz de coeficientes y $B$ la matriz de términos independientes. Se puede descomponer a $A$ como $A=D-L-U$
+	Como queremos averiguar $x$, lo igualamos a $1.05$:
 	
-	$T_J=D^{-1}\cdot (L+U)$, donde $D$ es la matriz diagonal de la matriz de coeficientes, y las matrices $L$ y $U$ son las matrices triangulares inferiores y superiores asociadas a esa misma matriz, cambiadas de signo, respectivamente.
+	$1.05 = 1.04881 + 0.4714x - 0.51854 \rightarrow 0.51973 = 0.4714x \rightarrow x=1.102524395$
 	
-	$T_{GS}=(D-L)^{-1}U$
+	Si comparamos este valor, con el real: $x=1.1025$ (pasando la raíz cuadrada como potencia), vemos que se aproxima bastante la solución.
 	
-	Estas matrices sirven mucho para calcular de forma iterativa los métodos si uno quiere programarlas en algún lenguaje, o bien hacerlo en un Excel. Recuerden que las fórmulas iterativas son:
+	\textbf{Inciso e):}\\
+	Para este hay que hacer $p(1.32)$, y acá ya no podemos usar interpolación lineal. Hay que armar el polinomio con todas las diferencias:
 	
-	$x^{(k+1)}=T_J\cdot x^{(k)} + C_J$, con $C_J=(D^{-1}\cdot B)$, para el método de Jacobi
+	$p(x)=1+0.494(x-1)-0.118(x-1)(x-1.05)+0.06667(x-1)(x-1.05)(x-1.1)-0.13335(x-1)(x-1.05)(x-1.1)(x-1.15)+0.8(x-1)(x-1.05)(x-1.1)(x-1.15)(x-1.2)+10.66733(x-1)(x-1.05)(x-1.1)(x-1.15)(x-1.2)(x-1.25)$
 	
-	$x^{(k+1)}=T_{GS} \cdot x^{(k)} + C_{GS}$, con $C_{GS}=(D-L)^{-1}\cdot B$, para el método de Gauss-Seidel
+	$p(1.32)=1.14932092$
 	
-	\section{Ejercicio 7 (Gauss Seidel + DD)}
-	Sea el S.E.L.: $\begin{cases}
-		4x-y=1\\
-		x+3y=2
-	\end{cases}$
+	Como comentario: no conviene usar valores que están fuera de nuestro intervalo de trabajo en interpolación para encontrar valores. En este caso, estamos dentro de un margen de tolerancia de un 10\% del extremo, pero para valores más alejados, los valores que arroja la función van a tener muy poco que ver con el valor original de la función.
+	
+	\section{Ejercicio 12 (Newton-Gregory + k)}
+	Halle $k \in \mathbb{R}$ para que exista un polinomio de grado 2 que pase por todos los puntos de la siguiente tabla, y halle dicho polinomio en forma normalizada:
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		$x_i$ & -1 & 0 & 2 & 3 & 5 \\
+		\hline
+		$f(x_i)$ & 10 & 3 & 1 & $k$ & 28 \\
+		\hline
+	\end{tabular}
+	\end{center}
+
+	ATENTOS acá, ejercicio TÍPICO de examen!!!
+	
+	Para resolverlo hay que usar la cantidad NECESARIA de puntos para el grado de polinomio que nos piden. Recordar que se necesitan $n+1$ puntos. Claramente, hay que dejar al punto que contiene la $k$ fuera de nuestros cálculos.
+	
+	Así que vamos a usar la tabla:
+	
+	\begin{tabular}{|c c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1 & O2\\
+		\hline
+		-1 & 10 & & \\
+		& & -7 & \\
+		0  & 3  & &2 \\
+		& & -1 & \\
+		2  & 1 & & \\
+		\hline
+	\end{tabular}
+
+	En este caso, vamos a usar el polinomio regresivo:
+	
+	$p(x)=1-(x-2)+2(x-2)x$
+	
+	Lo normalizamos: $p(x)=1-x+2+2x^2-4x=2x^2-5x+3$
+	
+	Primero hay que verificar que el punto que no tuvimos en cuenta para los cálculos verifique (ya que el polinomio interpolante DEBE pasar por todos los puntos).
+	
+	$p(5)=28 \rightarrow $ verifica
+	
+	Por último, para hallar el valor de $k$, basta con hacer $p(3)$, en este caso.
+	
+	$p(3)=k \rightarrow k=6$.
+	
+	\section{Ejercicio 13 (Newton-Gregory parcial)}
+	Dada la siguiente tabla de datos:
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			$x_i$ & 0 & 1 & 4 & 5 & 7 & 8\\
+			\hline
+			$f(x_i)$ & 4 & 3 & 0 & k & 123 & 220\\
+			\hline
+		\end{tabular}
+	\end{center}
+
 	\begin{enumerate}[label=\alph*)]
-		\item Indique si los métodos iterativos convergen. Justifique.
-		\item Realice cinco iteraciones por el método de Gauss-Seidel con $F(4, 10, 34, 56)$ y redondeo simétrico partiendo de $X^{(0)}=(0;0)$.
-		\item Idem b) pero partiendo de $X^{(0)}=(9;5)$. Compare.
+		\item Halle, si es posible, el valor de $k \in \mathbb{R}$ tal que por todos los puntos dados pase un polinomio de grado 3.
+		\item Con el valor de $k$ hallado en a), indique cuántos polinomios de grado 4 pasan por los puntos dados, y cuántos de grado 10 pasan por ellos. Justifique.
 	\end{enumerate}
 
-	En este ejercicio vamos a abordar un tema que hasta ahora en la práctica habíamos ignorado. ¿Los métodos de Gauss-Seidel y Jacobi..siempre convergen? La respuesta es que no. En la teoría se ven 3 criterios.
+	Otro ejercicio típico de parcial, en este se incluye un punto teórico
+	
+	\textbf{Inciso a):}
+	
+	Procedemos al igual que en el ejercicio anterior, tomamos una tabla reducida de puntos. En este caso necesitamos 4.
+	
+	\begin{tabular}{|c c c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1 & O2 & O3\\
+		\hline
+		0 & 4 & & & \\
+		& & -1 & & \\
+		1 & 3  & &0 & \\
+		& & -1 & & 1\\
+		4 & 0 & & 7 &\\
+		& & 41 & & \\
+		7 & 123 & & &\\
+		\hline
+	\end{tabular}
+
+	Usamos el polinomio progresivo en este caso:
+	
+	$p(x)=4-x+0x(x-1)+x(x-1)(x-4)=4-x+x(x-1)(x-4)$
+	
+	De nuevo, verificamos que pase por el punto que no consideramos: $p(8)=4-8+8(8-1)(8-4)=220 \rightarrow$ verifica
+	
+	Por último, hallamos $k$ haciendo $p(5)$.
+	
+	$p(5)=k \rightarrow k=19$
+	
+	\textbf{Inciso b):}
+	
+	Punto teórico, por estos puntos no pasa NINGÚN polinomio de grado 4, ya que contradice el teorema de existencia y unicidad del polinomio interpolante. "Dados n+1 puntos, existe un único polinomio de grado menor o igual a n que pase por dichos puntos".
+	
+	Como corolario del enunciado anterior, existen infinitos polinomios de grado 10 que pasen por los puntos.
+	
+	\section{Ejercicio 14 (Teórico)}
+	Indique si las siguientes proposiciones son Verdaderas o Falsas justificando \textit{(solo hacemos c, e y f)}:
 	
 	\begin{itemize}
-		\item Una sucesión definida por $X^{(k)}=TX^{(k-1)} + C$, con $k\ge 1$ y $C\ne0$ converge a la solución única de este sistema SI Y SOLO SI (\textbf{condición necesaria y suficiente}) $\rho(T)<1$. También, convergen con cualquier vector inicial
-		\item Si $\lVert T \rVert<1$ entonces los métodos iterativos convergen (esto es una condición suficiente). Converge con cualquier vector inicial.
+		\item Si se dispone de una tabla con 6 valores $x_i$ y sus imágenes $f_i$, entonces existe hasta la diferencia finita progresiva de orden 6 de $f_0$.
 	\end{itemize}
 
-	Sin embargo, estas condiciones pueden ser un tanto incómodas para calcular, por lo que este teorema es el que vamos a utilizar, generalmente:
-	
-	\textbf{Si $A$ es una matriz diagonalmente dominante para cualquier $X_0$ los métodos de Jacobi o Gauss Seidel dan sucesión ${X^{(k)}}_{k=0}^{\infty}$ que converge a la solución de $AX=B$}
-	
-	Vale la pena destacar que la anterior es una \textbf{\underline{condición suficiente}}.
-	
-	Con esto dicho, vamos a verificar que la matriz A de coeficientes del ejercicio sea diagonalmente dominante.
-	
-	$A=\begin{pmatrix}
-		4 & -1 \\
-		1 &3
-	\end{pmatrix}$$\begin{matrix}
-	\rightarrow 4 > 1 \\
-	\rightarrow 3 > 1
-\end{matrix}$
+	Falso, como vimos hasta ahora, cuando tenemos $n$ puntos, entonces el polinomio máximo es de orden $n-1$, por ende las diferencias llegan hasta el orden $n-1$. Es decir, se llegaría hasta la diferencia de orden 5.
 
-	Vemos que la matriz es diagonal dominante, por lo tanto podemos asegurar que los métodos iterativos convergen \textbf{(inciso a)}.
-	
-	\textbf{Para el inciso b} debemos realizar los despejes:
-	
-	$\begin{cases}
-		x^{(k+1)}=\frac{1}{4}y^{(k)}+\frac{1}{4}\\
-		y^{(k+1)}=\frac{-1}{3}x^{(k+1)}+\frac{2}{3}
-	\end{cases}$
+	\begin{itemize}
+		\item Dada una tabla de n pares de valores $(x_i,y_i)$, es posible encontrar más de un polinomio de grado n que interpolen todos los datos.
+	\end{itemize}
 
-	Con estos despejes vamos al Excel a hacer las 6 iteraciones.
+	Verdadero, para n pares de valores, es posible hallar más de un polinomio de grado n. Si en cambio dijera n+1 pares de valores, podríamos hallar un solo polinomio de grado n o menor.
 	
-	En cuanto al inciso c, la comparación que podemos hacer que ambos convergen, solo que el del ejercicio c tarda una iteración más.
+	\begin{itemize}
+		\item Dado un conjunto de n puntos $(x_i,y_i)$, existe una única función interpolante tal que \\ $f(x_i)=y_i, \forall i:1\dots n$
+	\end{itemize}
+	Falso. Nos dicen FUNCIÓN interpolante, no polinomio interpolante. Por ejemplo, para los puntos $(0,0), (1,1), (2,2), (3,3)$	sabemos que su polinomio interpolante sería la función identidad. Sin embargo, también podemos interpolar con $f(x)=x+\sen(2\pi x)$.
 	
-	\section{Ejercicio 9c (intercambio + Gauss Seidel)}
-	Aplique el método iterativo de Gauss Seidel para encontrar una solución aproximada de los siguientes sistemas, iterando hasta que cumpla con $\left\lVert x_i^{(r+1)}-x_i^{(r)} \right \rVert_\infty < 10^{-3}$
+		\section{Ejercicio 17 (Newton-Gregory + a y b)}
+	Indique los valores de $a$ y $b$ tal que el polinomio interpolante de los 5 puntos sea de grado 4, pero que por los primeros 4 puntos pase un polinomio de grado 2.
 	
-	Por abuso de notación, reemplazo $x_1$ por $x$, $x_2$ por $y$ y $x_3$ por $z$.
-	
-	$\begin{cases}
-		x+6y+2z=15\\
-		x+y-6z=-3\\
-		6x+y+z=9
-	\end{cases}$
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		$x_i$ & 1 & 2 & 3& 4&5\\
+		\hline
+		$f(x_i)$ & 0 & 7 & 24 & $a$ & $b$\\
+		\hline
+	\end{tabular}
 
-	Si intentamos hacer la verificación de si la matriz de coeficientes es diagonal dominante nos vamos a encontrar con que no lo es. Ya en la primera fila nos encontramos que $1\ngeq6+2$.
+	$a=\dots\dots$ (¿Es único? SI / NO) \hspace{2cm} $b=\dots\dots$ (¿Es único? SI / NO)
 	
-	A no desesperarse! Si la matriz no es DD, podemos intentar que lo sea! ¿Cómo? ...\\
-	...\\
-	...\\
-	Intercambiando filas!!! (o columnas, aunque esto es menos común).
+	Para resolver este ejercicio, vamos a empezar por lo último: hallar el polinomio de grado 2 para los primeros 4 puntos.
 	
-	Hagamos el siguiente intercambio: la primera pasa a ser la segunda, la segunda pasa a ser la tercera, y la última pasa a ser la primera.
-	
-	$
-	\begin{cases}
-		6x+y+z=9\\
-		x+6y+2z=15\\
-		x+y-6z=-3
-	\end{cases}
-	$
-	
-	Ahora la matríz de coeficientes es diagonalmente dominante! Ya que $\boxed{6>1+1}$, $\boxed{6>2+1}$ y $\boxed{6>1+1}$
-	
-	Realizamos el despeje y resolvemos:
-	
-	$\begin{cases}
-		x^{(k+1)}=\frac{9}{6}-\frac{1}{6}y^{(k)}-\frac{1}{6}z^{(k)}\\
-		y^{(k+1)}=\frac{15}{6}-\frac{1}{6}x^{(k+1)}-\frac{2}{6}z^{(k)}\\
-		z^{(k+1)}=\frac{3}{6}+\frac{1}{6}x^{(k+1)}+\frac{1}{6}x^{(k+1)}
-	\end{cases}$
+	\begin{tabular}{|c c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1 & O2\\
+		\hline
+		1 & 0 & & \\
+		& & 7 & \\
+		2  & 7  & &5 \\
+		& & 17 & \\
+		3  & 24 & & \\
+		\hline
+	\end{tabular}
 
-	\section{Ejercicio 12 (no DD)}
-	Sea el sistema $A\bullet X = B$ con $A=\begin{pmatrix}
-		5 & 7\\
-		13 & 20
-	\end{pmatrix}\;\;\;$ $B=\begin{pmatrix}
-	29\\
-	79
-\end{pmatrix}$
-
+	Usamos polinomio progresivo: $p(x)=0+7(x-1)+5(x-1)(x-2)$
+	
+	Entonces, el valor de $a$ debe pertenecer a este polinomio y debe ser este valor ÚNICO, ya que cualquier otro hará que por esos puntos NO pase un polinomio de grado 2. 
+	
+	$p(4)=a \rightarrow a=51$
+	
+	Luego, para el valor de $b$ nos piden que pase un polinomio de grado 4. Para que se cumpla esto, hay que tener en cuenta que por los primeros 4 puntos ya pasa un polinomio de grado 2.
+	
+	Para que pase un polinomio de grado 4 por todos los puntos es necesario que se rompa el patrón de los primeros 4 puntos.
+	
+	Para eso, evaluamos que valor debe tener $b$ para que por los puntos siga pasando un polinomio de grado 2:
+	
+	$p(5)=b \rightarrow b=88$. Si $b=88$ entonces por los puntos pasaría un polinomio de grado 2, entonces para cualquier valor de $b$ que NO sea 88 va a pasar un polinomio de grado 4 por todos los puntos.
+	
+	Esto es una regla general. Cuando tenemos puntos que están alineados a un polinomio en particular, y luego agregamos o cambiamos un punto que NO siga el patrón, el polinomio interpolante de los puntos se va al máximo grado posible, que es lo que ocurre en este caso.
+	
+	(hacer gráfico de la lineal)
+	
+	\section{Ejercicio 19 (Newton-Gregory + k)}
+	El polinomio que interpola a los puntos $(0,3),(0.5,5),(1,7)$ y $(k, 5k)$ es:
+	
 	\begin{enumerate}[label=\alph*)]
-		\item Indique si la matriz es diagonal dominante. ¿Puede asegurarse que sea posible resolverlo por el método de Gauss Seidel?
-		\item Realice 100 iteraciones por Gauss Seidel partiendo de $X^{0}=\begin{pmatrix}
-			1\\4
-		\end{pmatrix}$. ¿Converge a la solución que es $(3;2)$?
-		\item Analice si el resultado anterior contradice al teorema.
+		\item de grado 3, $\forall k \in \mathbb{R}$
+		\item nunca es de grado 3
+		\item $\exists k$ tal que sea de grado 1
+		\item $\exists k$ tal que sea de grado 2
 	\end{enumerate}
 
-	Bien, para el inciso a, podemos ver a simple vista que la matriz no es diagonal dominante. Y no solo eso, no hay manera de reordenarlo para que lo sea.
+	Hacemos la tabla de diferencias para puntos sin $k$:
 	
-	Vamos a ver los resultados de las 100 iteraciones en el Excel.
+	\begin{tabular}{|c c c c|}
+		\hline
+		$x_i$ & $y_i$ & O1 & O2\\
+		\hline
+		0 & 3 & & \\
+		& & 4 & \\
+		0.5  & 5  & &0 \\
+		& & 4 & \\
+		1  & 7 & & \\
+		\hline
+	\end{tabular}
+
+	La diferencia de orden 2 es nula, esto nos da la pauta de que tenemos un polinomio de grado 1.
 	
-	Vemos que de todas maneras converge, a pesar de que la matriz no es diagonal dominante. Esto ocurre (damos respuesta al inciso c) porque el teorema es condición suficiente, no necesaria; por ende aunque no sea DD puede igual converger.
+	$p(x)=3+4x$
+	
+	Veamos si con este polinomio encontramos algún $k$ que verifique
+	
+	$p(k)=5k \rightarrow 5k=3+4k \rightarrow k=3$
+	
+	Encontramos un valor de $k$, siendo $k=3$. Por ende, la respuesta correcta es la c.
+	
+	Con esto, descartamos la a, porque sabemso que si $k=3$, tenemos polinomio de grado 1.\\
+	La b la descartamos ya que si $k\ne3$ el polinomio va a ser de grado 3.\\
+	La d sabemos que no es ya que la diferencia da 0, y los puntos están alineados a una recta.
 \end{document}
  
